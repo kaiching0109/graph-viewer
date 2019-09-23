@@ -1,0 +1,15 @@
+@import "../abstracts";
+
+body {
+  background-image: linear-gradient(
+    to bottom left,
+    #1F6992,
+    #172358
+  );
+  background-size: cover;
+};
+//
+// .row {
+//   height: 100%;
+//   @include clearfix;
+// }

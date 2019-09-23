@@ -1,0 +1,29 @@
+@import '../abstracts';
+
+.card-custom {
+  margin: 2rem auto;
+  background-image: linear-gradient(to bottom left, #1E345E, #19224B);
+  border-radius: 5px;
+  border: 0;
+  padding: .5rem;
+  height: 20rem;
+  top: 0;
+  left: 0;
+  width: 100%;
+
+  &__body {
+    flex: 1 1 auto;
+    padding: 1.25rem;
+  }
+
+  &__heading {
+    font-size: 2.8rem;
+    font-weight: 300;
+    text-transform: uppercase;
+    color: #95C1E1;
+    margin: auto;
+    border-bottom: 1px solid #121447;
+    width: 100%;
+  }
+
+}

@@ -1,0 +1,19 @@
+.card {
+  margin: auto;
+  background-color: white;
+  border-radius: 5%;
+  border: 1px solid lightgrey;
+  padding: .5rem;
+  box-shadow: 0px 0px 15px 0px #888;
+
+  .card-body {
+    flex: 1 1 auto;
+    padding: 1.25rem;
+
+  .card-title {
+    margin-bottom: .75rem;
+  }
+
+  }
+
+}
