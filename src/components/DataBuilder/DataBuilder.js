@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 // import PropTypes from 'prop-types'
 import { useStaticQuery, graphql } from 'gatsby'
+import { BarChart } from '../Module'
 
 const DataBuilder = ({ children }) => {
   const data = useStaticQuery(graphql`
@@ -17,6 +18,7 @@ const DataBuilder = ({ children }) => {
 
   const [loading, setLoading] = useState(true)
   const [content, setContent] = useState([])
+  const [xAxisLabel, setxAxisLabel] = useState([])
   const [interval, setInterval] = useState(2)
   const [min, setMin] = useState(0)
   const [max, setMax] = useState(10)
@@ -43,6 +45,8 @@ const DataBuilder = ({ children }) => {
       }
       // setContent()
       console.log({ arrangedContent, ref })
+      setContent(arrangedContent)
+      setxAxisLabel(Object.keys(ref))
       setLoading(false)
     }
   }, [data.allWorldHappiness2015Json.edges])
@@ -50,9 +54,7 @@ const DataBuilder = ({ children }) => {
   console.log(content)
 
   return (
-    <>
-      <h1>Hello world</h1>
-    </>
+    !loading && <BarChart chartId='happiness-score-bin' data={content} xAxisLabels={xAxisLabel} />
   )
 }
 
