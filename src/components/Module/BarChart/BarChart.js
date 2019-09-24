@@ -5,49 +5,25 @@ const BarChart = props => {
 
   const [svg, setSVG] = useState(null)
   const { chartId } = props
-  const dataset = [
-    {
-      label: '0-1',
-      value: 0
-    },
-    {
-      label: '2-3',
-      value: 2
-    },
-    {
-      label: '4-5',
-      value: 63
-    },
-    {
-      label: '6-7',
-      value: 78
-    },
-    {
-      label: '8-9',
-      value: 15
-    },
-    {
-      label: '10',
-      value: 0
-    }
-  ]
 
   useEffect(() => {
     const margin = {top: 40, right: 30, bottom: 30, left: 50},
       width = 460 - margin.left - margin.right,
       height = 320 - margin.top - margin.bottom;
-    if (!svg) {
+    const { data } = props
+    console.log({ data })
+    if (!svg || !data) {
       const svgSelector = d3.select(`#${chartId}`)
         .append('svg')
       setSVG(svgSelector)
-    } else drawChart(svg, { ...props, width, height, margin, dataset })
-  }, [svg, chartId, props])
+    } else drawChart(svg, { ...props, width, height, margin })
+  }, [svg, chartId, props, props.data])
 
   return <div style={{ padding: '2rem' }} id={chartId} />
 }
 
-const drawChart = (svg, { dataset, xAxisLabels, yAxisLables, width, height, margin }) => {
-  var greyColor = "#898989";
+const drawChart = (svg, { data, xAxisLabels, yAxisLables, width, height, margin }) => {
+  var greyColor = "#898989"
   var barColor = d3.interpolateInferno(0.4);
   var highlightColor = d3.interpolateInferno(0.3);
   svg.attr('width', width + margin.left + margin.right)
@@ -61,7 +37,7 @@ const drawChart = (svg, { dataset, xAxisLabels, yAxisLables, width, height, marg
     .range([height, 0])
   const xAxis = d3.axisBottom(x).tickSize([]).tickPadding(10)
   const yAxis = d3.axisLeft(y)
-  x.domain(dataset.map(d => d.label))
+  x.domain(data.map(d => d.label))
   y.domain([0, 100])
 
   svg.append('g')
@@ -72,12 +48,12 @@ const drawChart = (svg, { dataset, xAxisLabels, yAxisLables, width, height, marg
     .attr('class', 'y axis')
     .call(yAxis)
     svg.selectAll('.bar')
-        .data(dataset)
+        .data(data)
         .enter().append('rect')
         .attr('class', 'bar')
         .style('display', d => { return d.value === null ? 'none' : null; })
         .style('fill',  d => {
-            return d.value === d3.max(dataset,  d => { return d.value; })
+            return d.value === d3.max(data,  d => { return d.value; })
             ? highlightColor : barColor
             })
         .attr('x',  d => { return x(d.label); })
@@ -93,14 +69,14 @@ const drawChart = (svg, { dataset, xAxisLabels, yAxisLables, width, height, marg
         .attr('height',  d => { return height - y(d.value); });
 
         svg.selectAll('.label')
-            .data(dataset)
+            .data(data)
             .enter()
             .append('text')
             .attr('class', 'label')
             .style('display',  d => { return d.value === null ? 'none' : null; })
             .attr('x', ( d => { return x(d.label) + (x.bandwidth() / 2) -8 ; }))
                 .style('fill',  d => {
-                    return d.value === d3.max(dataset,  d => { return d.value; })
+                    return d.value === d3.max(data,  d => { return d.value; })
                     ? highlightColor : greyColor
                     })
             .attr('y',  d => { return height; })

@@ -25,28 +25,26 @@ const DataBuilder = ({ children }) => {
 
   useEffect(() => {
     let ref = {}
-    let arrangedContent = []
+    let temp = []
+    let order = []
     if (loading) {
       let counter = 0
       data.allWorldHappiness2015Json.edges
         .map(({ node: { Happiness_Score: score } }, i) => {
           const index = Math.round(score / interval)
-          if (arrangedContent[index]) arrangedContent[index]++
-          else arrangedContent[index] = 1
+          if (temp[index]) temp[index]++
+          else temp[index] = 1
         })
       for (let from = min; from <= max; from += interval) {
         let to = from + interval - 1
         if (to > max) to = max
-        if (from === to) ref[`${to}`] = 0
-        else {
-          const value = arrangedContent[counter++]
-          ref[`${from}-${to}`] = value ? value : 0
-        }
+        const key = (from === to) ? `${to}` : `${from}-${to}`
+        const value = temp[counter++]
+        ref[key] = value ? value : 0
+        order.push(key)
       }
-      // setContent()
-      console.log({ arrangedContent, ref })
-      setContent(arrangedContent)
-      setxAxisLabel(Object.keys(ref))
+      const result = order.map(key => ({ label: key, value: ref[key] }))
+      setContent(result)
       setLoading(false)
     }
   }, [data.allWorldHappiness2015Json.edges])
