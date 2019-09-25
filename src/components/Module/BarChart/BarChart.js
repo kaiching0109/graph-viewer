@@ -9,48 +9,60 @@ const BarChart = props => {
   const context = useContext(WindowDimensionsContext)
   const [width, setWidth] = useState(null)
   const [height, setHeight] = useState(null)
-
-  const target = useResponsivefy(svg)
-  if (!height && !width) {
-    if (target) {
-      const { targetWidth, targetHeight } = target
-      setWidth(targetWidth)
-      setHeight(targetHeight)
-    }
-  }
+  const [loading, setLoading] = useState(true)
+  const margin = { top: 20, right: 20, bottom: 50, left: 100 }
 
   useEffect(() => {
-    const margin = { top: 40, right: 30, bottom: 30, left: 50 }
-    // const width = 460 - margin.left - margin.right,
-    // height = 320 - margin.top - margin.bottom
-    const { data } = props
-    console.log({ data })
-    if (context.width && context.height) {
-      console.log('hohoho')
-      if ((!svg || !data)) {
-        console.log('123123123')
-        const chart = d3.select(`#${chartId}`)
-        const svgSelector = chart
-          .append('svg')
-        setSVG(svgSelector)
-      } else { drawChart(svg, { ...props, margin, height, width }) }
+    const chart = d3.select(`#${chartId}`)
+    const svgSelector = chart
+      .append('svg')
+      .attr('align', 'center')
+    setSVG(svgSelector)
+  }, [])
+
+  const target = useResponsivefy(svg)
+
+  useEffect(() => {
+    console.log('reload size', { target })
+    let { targetWidth, targetHeight } = target
+    console.log({ targetWidth, targetHeight, height, width })
+    if (targetWidth && targetHeight && svg) {
+      targetWidth = targetWidth - margin.left - margin.right
+      targetHeight = targetHeight - margin.top - margin.bottom
+      if (loading) { // init height and width
+        console.log('reload targetWidth && targetWidth')
+        setWidth(targetWidth)
+        setHeight(targetHeight)
+        setLoading(false)
+      }
+      if (targetWidth !== width || targetHeight !== height) {
+        setWidth(targetWidth)
+        setHeight(targetHeight)
+        drawChart(svg, { ...props, margin, height: targetHeight, width: targetWidth })
+      }
     }
-  }, [svg, chartId, props, props.data, context.width, context.height, height, width])
+  }, [target.targetWidth, target.targetHeight, height, width, context.width, context.height, svg])
 
   return (
-    <div style={{ padding: '2rem' }} id={chartId} />
+    <div id={chartId} />
   )
 }
 
+// const initChart = (svg, { data, xAxisLabels, yAxisLables, width, height, margin }) => {
+//   const greyColor = '#898989'
+//   const barColor = d3.interpolateInferno(0.4)
+//   const highlightColor = d3.interpolateInferno(0.3)
+//
+// }
+
 const drawChart = (svg, { data, xAxisLabels, yAxisLables, width, height, margin }) => {
-  console.log('Here')
-  console.log({ height, width })
-  var greyColor = '#898989'
-  var barColor = d3.interpolateInferno(0.4)
-  var highlightColor = d3.interpolateInferno(0.3)
-  svg
-    .append('g')
-    .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
+  const greyColor = '#898989'
+  const barColor = d3.interpolateInferno(0.4)
+  const highlightColor = d3.interpolateInferno(0.3)
+  // svg.attr('padding', '200rem')
+  // svg
+  //   .append('g')
+  // .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
   const x = d3.scaleBand()
     .range([0, width])
     .padding(0.4)

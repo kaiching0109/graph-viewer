@@ -1,6 +1,7 @@
 @import '../abstracts';
 
 .card-custom {
+  // position: relative;
   margin: 2rem auto;
   background-image: linear-gradient(to bottom left, #1E345E, #19224B);
   border-radius: 5px;
@@ -12,8 +13,11 @@
   width: 100%;
 
   &__body {
+    // position: relative;
     flex: 1 1 auto;
-    padding: 1.25rem;
+    padding: 5rem;
+    height: 100%;
+    width: 100%;
   }
 
   &__heading {

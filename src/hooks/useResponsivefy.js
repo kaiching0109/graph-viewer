@@ -2,9 +2,10 @@ import * as d3 from 'd3'
 
 const responsivefy = (svg) => {
   // get container + svg aspect ratio
-  if (!svg) return null
+  if (!svg) return { targetWidth: null, targetHeight: null }
   console.log('1231rtergfhgndsgbx')
   const container = d3.select(svg.node().parentNode)
+  console.log({ container })
   const width = parseInt(svg.style('width'))
   const height = parseInt(svg.style('height'))
   const aspect = width / height
