@@ -52,7 +52,9 @@ const DataBuilder = ({ children }) => {
   console.log(content)
 
   return (
-    !loading && <BarChart chartId='happiness-score-bin' data={content} xAxisLabels={xAxisLabel} />
+    !loading && (
+        <BarChart chartId='happiness-score-bin' data={content} xAxisLabels={xAxisLabel} />
+    )
   )
 }
 

@@ -1,10 +1,13 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
+import { WindowDimensionsContext } from '../../../context/window-dimensions-context'
 import * as d3 from 'd3'
 
 const BarChart = props => {
 
   const [svg, setSVG] = useState(null)
   const { chartId } = props
+  const context = useContext(WindowDimensionsContext)
+  console.log({ context })
 
   useEffect(() => {
     const margin = {top: 40, right: 30, bottom: 30, left: 50},
@@ -19,7 +22,9 @@ const BarChart = props => {
     } else drawChart(svg, { ...props, width, height, margin })
   }, [svg, chartId, props, props.data])
 
-  return <div style={{ padding: '2rem' }} id={chartId} />
+  return (
+    <div style={{ padding: '2rem' }} id={chartId} />
+  )
 }
 
 const drawChart = (svg, { data, xAxisLabels, yAxisLables, width, height, margin }) => {
