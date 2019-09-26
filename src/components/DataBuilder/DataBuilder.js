@@ -28,12 +28,16 @@ const DataBuilder = ({ children }) => {
   const [interval, setInterval] = useState(2)
   const [min, setMin] = useState(0)
   const [max, setMax] = useState(10)
-  const [selectRegion, setSelectRegion] = useState(null)
+  const [selectRegion, setSelectRegion] = useState('all')
+
+  // useEffect(()=> {
+  //
+  // })
 
   useEffect(() => {
     let temp = [] // an array to score all points by index, e.g  temp[0] represent the number of having 1 points
-    let regions = []
-    if (loadData) {
+    let regions = [{ label: 'ALL', value: 'all' }]
+    // if (loadData) {
       console.log('Update content')
       let result = []
       data.allWorldHappiness2015Json.edges
@@ -46,8 +50,10 @@ const DataBuilder = ({ children }) => {
           })
           regions = isFound ? regions : [...regions, { label: region, value: region.toLowerCase() }]
           // }
-          if (selectRegion) {
-            if (selectRegion !== region) {
+          if (selectRegion !== 'all') {
+            console.log({ selectRegion, region })
+            if (selectRegion === region.toLowerCase()) {
+              // console.log('Update result')
               if (result[index]) result[index] = [...result[index], { region }]
               else result[index] = [{ region }]
             }
@@ -59,8 +65,8 @@ const DataBuilder = ({ children }) => {
       setContent(result)
       setDropdownItems(regions)
       setLoadData(false)
-    }
-  }, [data.allWorldHappiness2015Json.edges])
+    // }
+  }, [data.allWorldHappiness2015Json.edges, selectRegion])
 
   useEffect(() => {
     // To produce
@@ -78,21 +84,31 @@ const DataBuilder = ({ children }) => {
         order.push(key)
       }
       const result = order.map(key => ({ label: key, value: ref[key] }))
+      // console.log({ content })
       setFilterContent(result)
       setLoading(false)
       console.log({ result })
     }
-  }, [content, selectRegion])
+  }, [content])
+
+  // useEffect(() => {
+  //   console.log({ filterContent })
+  // }, [filterContent])
 
   const HappinessScoreDistributionHeader = (
     <div className='row'>
-      <p>Title</p>
-      <DropdownButton id='dropdown-basic-button'>
-        {dropdownItems.map(item => {
-          const { label, value } = item
-          return <Dropdown.Item key={value} onClick={() => console.log(value)}>{label}</Dropdown.Item>
-        })}
-      </DropdownButton>
+      <div className='col-sm-12' style={{ display: 'block' }}>
+        <p style={{ display: 'inline-block' }}>Title</p>
+        <DropdownButton id='dropdown-basic-button' style={{ float: 'right', display: 'inline-block' }}>
+          {dropdownItems.map((item, i) => {
+            const { label, value } = item
+            return <Dropdown.Item key={i} onClick={() => {
+              console.log(value)
+              setSelectRegion(value)
+            }}>{label}</Dropdown.Item>
+          })}
+        </DropdownButton>
+      </div>
     </div>
   )
 

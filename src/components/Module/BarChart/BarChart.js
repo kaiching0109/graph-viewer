@@ -8,34 +8,55 @@ const MARGIN = { top: 50, right: 20, bottom: 50, left: 100 }
 
 const BarChart = props => {
   const { chartId, data, xKey, yKey } = props
-  console.log({ data })
   const [width, setWidth] = useState(null)
   const [height, setHeight] = useState(null)
   const chartRef = useRef(null)
 
   useEffect(() => {
+    console.log('INIT')
     const handleResize = () => {
-      const chart = d3.select(`#${chartId}`)
-      if (chart) chart.selectAll('svg').remove()
-      setWidth(chartRef.current.parentNode.clientWidth)
-      setHeight(chartRef.current.parentNode.clientHeight)
+      console.log('Removing...')
+      const newWidth = chartRef.current.parentNode.clientWidth
+      const newHeight = chartRef.current.parentNode.clientHeight * 0.8
+      if (newWidth !== width || newHeight !== height) {
+        const chart = d3.select(`#${chartId}`)
+        // setTimeout(() => {
+        if (chart) chart.selectAll('svg').remove()
+        setWidth(newWidth)
+        setHeight(newHeight)
+        // }, 40)
+      }
     }
-    setWidth(chartRef.current.parentNode.clientWidth)
-    setHeight(chartRef.current.parentNode.clientHeight)
+    setTimeout(() => {
+      setWidth(chartRef.current.parentNode.clientWidth)
+      setHeight(chartRef.current.parentNode.clientHeight * 0.8)
+    }, 100)
     window.addEventListener('resize', handleResize)
     return () => {
       window.removeEventListener('resize', handleResize)
     }
-  }, [])
+  }, [chartRef.current])
 
   useEffect(() => {
-    if (data && chartId && width && height) drawChart()
-  }, [width, height])
+    console.log('here')
+    if (data && chartId && width && height) {
+      console.log('Updating...')
+      drawChart()
+    }
+  }, [width, height, data])
+
+  useEffect(() => {
+    const chart = d3.select(`#${chartId}`)
+    if (chart) chart.selectAll('svg').remove()
+    drawChart()
+  }, [data])
 
   function drawChart () {
     const chart = d3.select(`#${chartId}`)
     const svg = chart
       .append('svg')
+      .attr('height', '100%')
+      // .attr('transform', 'translateX(100rem)')
     const { xScale, yScale } = getScales(width, height, xKey, yKey, data)
     setAxis(svg, width, height, xScale, yScale, xKey, yKey, data)
     setBars(svg, width, height, xScale, yScale, xKey, yKey, data)
@@ -61,7 +82,7 @@ const BarChart = props => {
   }
 
   return (
-    <div id={chartId} ref={chartRef} />
+    <div id={chartId} ref={chartRef} style={{ height: '90%' }} />
   )
 }
 
@@ -86,7 +107,7 @@ const setAxis = (svg, width, height, xScale, yScale, xKey, yKey, data) => {
   const { xAxis, yAxis } = getAxis(width, height, xScale, yScale, xKey, yKey, data)
   svg.append('g')
     .attr('class', 'x axis')
-    .attr('transform', 'translate(0,' + height + ')')
+    .attr('transform', 'translate(20,' + height + ')')
     .call(xAxis)
   svg.append('g')
     .attr('class', 'y axis')
@@ -117,4 +138,7 @@ const setBars = (svg, width, height, xScale, yScale, xKey, yKey, data) => {
     .attr('height', d => { return height - yScale(d[yKey]) })
 }
 
-export default BarChart
+export default React.memo(BarChart, (prevProps, props) => {
+  console.log({ prevProps: prevProps.data, props: props.data })
+  return prevProps.data === props.data
+})
