@@ -10,21 +10,17 @@ const BarChart = props => {
   const { chartId, data, xKey, yKey } = props
   const [width, setWidth] = useState(null)
   const [height, setHeight] = useState(null)
+  const [loading, setLoading] = useState(true)
   const chartRef = useRef(null)
 
   useEffect(() => {
     console.log('INIT')
     const handleResize = () => {
-      console.log('Removing...')
       const newWidth = chartRef.current.parentNode.clientWidth
       const newHeight = chartRef.current.parentNode.clientHeight * 0.8
       if (newWidth !== width || newHeight !== height) {
-        const chart = d3.select(`#${chartId}`)
-        // setTimeout(() => {
-        if (chart) chart.selectAll('svg').remove()
         setWidth(newWidth)
         setHeight(newHeight)
-        // }, 40)
       }
     }
     setTimeout(() => {
@@ -38,18 +34,14 @@ const BarChart = props => {
   }, [chartRef.current])
 
   useEffect(() => {
-    console.log('here')
     if (data && chartId && width && height) {
-      console.log('Updating...')
+      if (!loading) {
+        const chart = d3.select(`#${chartId}`)
+        if (chart) chart.selectAll('svg').remove()
+      } else setLoading(false)
       drawChart()
     }
   }, [width, height, data])
-
-  useEffect(() => {
-    const chart = d3.select(`#${chartId}`)
-    if (chart) chart.selectAll('svg').remove()
-    drawChart()
-  }, [data])
 
   function drawChart () {
     const chart = d3.select(`#${chartId}`)
