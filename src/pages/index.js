@@ -1,8 +1,8 @@
-import React, { useContext } from "react"
-import { Link } from "gatsby"
-import Layout from "../components/layout"
-import Image from "../components/image"
-import SEO from "../components/seo"
+import React, { useContext } from 'react'
+import { Link } from 'gatsby'
+import Layout from '../components/layout'
+import Image from '../components/image'
+import SEO from '../components/seo'
 import '../styles/index.scss'
 import { Card } from '../components/Base'
 import DataBuilder from '../components/DataBuilder'
@@ -18,9 +18,7 @@ const IndexPage = () => {
           <div className='u-center-text'>
             <div className='row'>
               <div className='col-sm'>
-                <Card title='Happiness Score Distribution'>
-                  <DataBuilder />
-                </Card>
+                <DataBuilder />
               </div>
               <div className='col-sm'>
                 <Card title='hello'>
