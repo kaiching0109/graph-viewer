@@ -77,19 +77,21 @@ const DataBuilder = ({ children }) => {
       let ref = {}
       for (let from = min; from <= max; from += interval) {
         let to = from + interval - 1
+        console.log({ from, to, min, max })
         if (to > max) to = max
         const key = (from === to) ? `${to}` : `${from}-${to}`
         const value = content[counter++]
         ref[key] = value ? value.length : 0
         order.push(key)
       }
+      console.log({ ref })
       const result = order.map(key => ({ label: key, value: ref[key] }))
       // console.log({ content })
       setFilterContent(result)
       setLoading(false)
       console.log({ result })
     }
-  }, [content])
+  }, [content, interval])
 
   // useEffect(() => {
   //   console.log({ filterContent })
@@ -112,10 +114,14 @@ const DataBuilder = ({ children }) => {
     </div>
   )
 
+  // const HappinessScoreDistributionFooter = (
+  //   <BarChart chartId='happiness-score-bin-sub' data={filterContent} xKey='label' yKey='value' />
+  // )
+
   return (
     !loading && (
-      <Card title={HappinessScoreDistributionHeader}>
-        <BarChart chartId='happiness-score-bin' data={filterContent} xKey='label' yKey='value' />
+      <Card header={HappinessScoreDistributionHeader} footer={<input type='range' value={interval} min={min} max={max} step='1' onChange={e => setInterval(parseInt(e.target.value))}/>}>
+        <BarChart chartId='happiness-score-bin' subChartId='sub-happiness-score-bin' data={filterContent} xKey='label' yKey='value' />
       </Card>
     )
   )

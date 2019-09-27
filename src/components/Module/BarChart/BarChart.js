@@ -7,11 +7,12 @@ const GREY_COLOR = '#898989'
 const MARGIN = { top: 50, right: 20, bottom: 50, left: 100 }
 
 const BarChart = props => {
-  const { chartId, data, xKey, yKey } = props
+  const { chartId, subChartId, data, xKey, yKey } = props
   const [width, setWidth] = useState(null)
   const [height, setHeight] = useState(null)
   const [loading, setLoading] = useState(true)
   const chartRef = useRef(null)
+  const subChartRef = useRef(null)
 
   useEffect(() => {
     console.log('INIT')
@@ -45,13 +46,15 @@ const BarChart = props => {
 
   function drawChart () {
     const chart = d3.select(`#${chartId}`)
-    const svg = chart
+    let svg = chart
       .append('svg')
       .attr('height', '100%')
       // .attr('transform', 'translateX(100rem)')
     const { xScale, yScale } = getScales(width, height, xKey, yKey, data)
     setAxis(svg, width, height, xScale, yScale, xKey, yKey, data)
+    svg = svg.append('g')
     setBars(svg, width, height, xScale, yScale, xKey, yKey, data)
+    // setSubBars(svg, subChartId, width, height, xScale, yScale, xKey, yKey, data)
     svg.selectAll(xKey)
       .data(data)
       .enter()
@@ -128,6 +131,27 @@ const setBars = (svg, width, height, xScale, yScale, xKey, yKey, data) => {
     })
     .attr('y', d => { return yScale(d[yKey]) })
     .attr('height', d => { return height - yScale(d[yKey]) })
+}
+
+const setSubBars = (svg, subChartId, width, height, xScale, yScale, xKey, yKey, data) => {
+  const chart = d3.select(`#${subChartId}`)
+  svg = chart
+    .append('svg')
+    .attr('height', '100%')
+  const xOverview = d3.scaleBand()
+    .domain(data.map(function (d) { return d.label }))
+    .range([0, width], 0.2)
+  const yOverview = d3.scaleLinear()
+    .range([height, 0])
+  yOverview.domain(yScale.domain())
+  const subBars = svg.selectAll('.subBar')
+    .data(data)
+  subBars.enter().append('rect')
+    .classed('subBar', true)
+    .attr('height', d => `${height - yScale(d[yKey])}`)
+    .attr('x', d => { return xOverview(d[xKey]) })
+    .attr('width', xOverview.bandwidth())
+    .attr('y', d => { return yOverview(d[yKey]) })
 }
 
 export default React.memo(BarChart, (prevProps, props) => {
