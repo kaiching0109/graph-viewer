@@ -4,10 +4,14 @@ export const WindowDimensionsContext = createContext({ width: null, height: null
 
 export default ({ children }) => {
   const [dimensions, setDimensions] = useState({
-    width: window.innerWidth,
-    height: window.innerHeight
+    width: null,
+    height: null
   })
   useEffect(() => {
+    setDimensions({
+      width: window.innerWidth,
+      height: window.innerHeight
+    })
     const handleResize = () => {
       setDimensions({
         width: window.innerWidth,
