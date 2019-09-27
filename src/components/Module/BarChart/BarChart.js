@@ -7,7 +7,7 @@ const GREY_COLOR = '#898989'
 const MARGIN = { top: 50, right: 20, bottom: 50, left: 100 }
 
 const BarChart = props => {
-  const { chartId, subChartId, data, xKey, yKey } = props
+  const { chartId, subChartId, data, xKey, yKey, hover } = props
   const [width, setWidth] = useState(null)
   const [height, setHeight] = useState(null)
   const [loading, setLoading] = useState(true)
@@ -111,15 +111,33 @@ const setAxis = (svg, width, height, xScale, yScale, xKey, yKey, data) => {
 }
 
 const setBars = (svg, width, height, xScale, yScale, xKey, yKey, data) => {
-  svg.selectAll('.bar')
+  const bar = svg.selectAll('.bar')
+  bar
     .data(data)
     .enter().append('rect')
+    .on('mouseover', function (d) {
+      console.log('hello')
+      console.log({ this: this })
+      d3.select(this).transition().attr('fill', 'white')
+      // div.transition()
+      //     .duration(200)
+      //     .style('opacity', 0.9)
+      // div	.html(formatTime(d.date) + '<br/>' + d.close)
+      //     .style('left', (d3.event.pageX) + 'px')
+      //     .style('top', (d3.event.pageY - 28) + 'px')
+    })
+    .on('mouseout', (d, i) => {
+      d3.select(this).transition().attr('fill', 'white')
+      // div.transition()
+      //   .duration(500)
+      //   .style('opacity', 0)
+    })
     .attr('class', 'bar')
     .style('display', d => { return d[yKey] === null ? 'none' : null })
-    .style('fill', d => {
-      return d[yKey] === d3.max(data, d => { return d[yKey] })
-        ? HIGHLIGHT_COLOR : BAR_COLOR
-    })
+    // .style('fill', d => {
+    //   return d[yKey] === d3.max(data, d => { return d[yKey] })
+    //     ? HIGHLIGHT_COLOR : BAR_COLOR
+    // })
     .attr('x', d => { return xScale(d[xKey]) })
     .attr('width', xScale.bandwidth())
     .attr('y', d => { return height })
