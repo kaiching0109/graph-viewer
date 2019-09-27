@@ -26,7 +26,7 @@ const DataBuilder = ({ children }) => {
   const [dropdownItems, setDropdownItems] = useState([])
   // const [xAxisLabel, setxAxisLabel] = useState([])
   const [interval, setInterval] = useState(2)
-  const [min, setMin] = useState(0)
+  const [min, setMin] = useState(1)
   const [max, setMax] = useState(10)
   const [selectRegion, setSelectRegion] = useState('all')
 
@@ -66,7 +66,7 @@ const DataBuilder = ({ children }) => {
       setDropdownItems(regions)
       setLoadData(false)
     // }
-  }, [data.allWorldHappiness2015Json.edges, selectRegion])
+  }, [data.allWorldHappiness2015Json.edges, selectRegion, interval])
 
   useEffect(() => {
     // To produce
@@ -75,6 +75,7 @@ const DataBuilder = ({ children }) => {
       let counter = 0
       let order = []
       let ref = {}
+      console.log({ content, interval })
       for (let from = min; from <= max; from += interval) {
         let to = from + interval - 1
         console.log({ from, to, min, max })
