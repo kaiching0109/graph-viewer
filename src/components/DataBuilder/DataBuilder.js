@@ -38,33 +38,34 @@ const DataBuilder = ({ children }) => {
     let temp = [] // an array to score all points by index, e.g  temp[0] represent the number of having 1 points
     let regions = [{ label: 'ALL', value: 'all' }]
     // if (loadData) {
-      console.log('Update content')
-      let result = []
-      data.allWorldHappiness2015Json.edges
-        .map(({ node: { Happiness_Score: score, Region: region } }) => {
-          const index = Math.round(score / interval)
-          // if (selectRegion) {
-          const isFound = regions.find(_ => {
-            console.log(_, region)
-            return _.value === region.toLowerCase()
-          })
-          regions = isFound ? regions : [...regions, { label: region, value: region.toLowerCase() }]
-          // }
-          if (selectRegion !== 'all') {
-            console.log({ selectRegion, region })
-            if (selectRegion === region.toLowerCase()) {
-              // console.log('Update result')
-              if (result[index]) result[index] = [...result[index], { region }]
-              else result[index] = [{ region }]
-            }
-          } else {
+    console.log('Update content')
+    let result = []
+    data.allWorldHappiness2015Json.edges
+      .map(({ node: { Happiness_Score: score, Region: region } }) => {
+        let index = Math.round(score / interval)
+        if (interval === max) index = 0
+        // if (selectRegion) {
+        const isFound = regions.find(_ => {
+          console.log(_, region)
+          return _.value === region.toLowerCase()
+        })
+        regions = isFound ? regions : [...regions, { label: region, value: region.toLowerCase() }]
+        // }
+        if (selectRegion !== 'all') {
+          console.log({ selectRegion, region })
+          if (selectRegion === region.toLowerCase()) {
+            // console.log('Update result')
             if (result[index]) result[index] = [...result[index], { region }]
             else result[index] = [{ region }]
           }
-        })
-      setContent(result)
-      setDropdownItems(regions)
-      setLoadData(false)
+        } else {
+          if (result[index]) result[index] = [...result[index], { region }]
+          else result[index] = [{ region }]
+        }
+      })
+    setContent(result)
+    setDropdownItems(regions)
+    setLoadData(false)
     // }
   }, [data.allWorldHappiness2015Json.edges, selectRegion, interval])
 
@@ -115,13 +116,9 @@ const DataBuilder = ({ children }) => {
     </div>
   )
 
-  // const HappinessScoreDistributionFooter = (
-  //   <BarChart chartId='happiness-score-bin-sub' data={filterContent} xKey='label' yKey='value' />
-  // )
-
   return (
     !loading && (
-      <Card header={HappinessScoreDistributionHeader} footer={<input type='range' value={interval} min={min} max={max} step='1' onChange={e => setInterval(parseInt(e.target.value))}/>}>
+      <Card header={HappinessScoreDistributionHeader} footer={<input type='range' value={interval} min={min} max={max} step='1' onChange={e => setInterval(parseInt(e.target.value))} />}>
         <BarChart chartId='happiness-score-bin' subChartId='sub-happiness-score-bin' data={filterContent} xKey='label' yKey='value' />
       </Card>
     )

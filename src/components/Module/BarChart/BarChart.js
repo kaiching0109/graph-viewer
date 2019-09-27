@@ -17,7 +17,7 @@ const BarChart = props => {
   useEffect(() => {
     console.log('INIT')
     const handleResize = () => {
-      const newWidth = chartRef.current.parentNode.clientWidth
+      const newWidth = chartRef.current.parentNode.clientWidth * 0.95
       const newHeight = chartRef.current.parentNode.clientHeight * 0.8
       if (newWidth !== width || newHeight !== height) {
         setWidth(newWidth)
@@ -25,7 +25,7 @@ const BarChart = props => {
       }
     }
     setTimeout(() => {
-      setWidth(chartRef.current.parentNode.clientWidth)
+      setWidth(chartRef.current.parentNode.clientWidth * 0.95)
       setHeight(chartRef.current.parentNode.clientHeight * 0.8)
     }, 100)
     window.addEventListener('resize', handleResize)
@@ -72,7 +72,7 @@ const BarChart = props => {
       .duration(750)
       .delay((d, i) => { return i * 150 })
       .text(d => { return d[yKey] })
-      .attr('y', d => { return yScale(d[yKey]) + 0.1 })
+      .attr('y', d => { return yScale(d[yKey]) })
       .attr('dy', '-.7em')
   }
 
@@ -94,7 +94,7 @@ const getAxis = (width, height, xScale, yScale, xKey, yKey, data) => {
   const xAxis = d3.axisBottom(xScale).tickSize([]).tickPadding(10)
   const yAxis = d3.axisLeft(yScale)
   xScale.domain(data.map(d => d[xKey]))
-  yScale.domain([0, 100])
+  yScale.domain([0, 200])
   return { xAxis, yAxis }
 }
 
