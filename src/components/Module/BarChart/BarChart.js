@@ -12,7 +12,9 @@ const BarChart = props => {
   const [height, setHeight] = useState(null)
   const [loading, setLoading] = useState(true)
   const chartRef = useRef(null)
+  // const colorScale = d3.schemeCategory20()
   // const subChartRef = useRef(null)
+  const [barRef, setBarRef] = useState([])
   const [barColor, setBarColor] = useState(color || BAR_COLOR)
   // const hoverColor = useState(hoverColor || null)
 
@@ -39,6 +41,7 @@ const BarChart = props => {
   useEffect(() => {
     if (data && chartId && width && height) {
       if (!loading) {
+        console.log('123123123')
         const chart = d3.select(`#${chartId}`)
         if (chart) chart.selectAll('svg').remove()
       } else setLoading(false)
@@ -46,7 +49,15 @@ const BarChart = props => {
     }
   }, [width, height, data])
 
-  function drawChart () {
+  // useEffect(() => {
+  //   svg.selectAll('.bar').style('fill').style('fill', d => barColor)
+  // }, [barColor])
+  //
+  // handleHover = () => {
+  //
+  // }
+
+  const drawChart = () => {
     const chart = d3.select(`#${chartId}`)
     let svg = chart
       .append('svg')
@@ -78,14 +89,26 @@ const BarChart = props => {
       .attr('dy', '-.7em')
   }
 
-  const setBars = (svg, width, height, xScale, yScale, xKey, yKey, data) => {
+  // useEffect(() => {
+  //   barRef.enter().attr()
+  //     .style('fill', d => {
+  //       return barColor
+  //     })
+  // }, [barColor, barRef])
+
+  function setBars (svg, width, height, xScale, yScale, xKey, yKey, data) {
     const bar = svg.selectAll('.bar')
     bar
       .data(data)
       .enter().append('rect')
-      .on('mouseover', (d) => {
-        // if(hoverColor) d3.select(this).transition().attr('fill', hoverColor)
-        if (hoverColor) setBarColor(hoverColor)
+      .attr('class', 'bar')
+      .attr('fill', barColor)
+      .on('mouseover', function () {
+        if (hoverColor) d3.select(this).attr('fill', hoverColor)
+        // if (hoverColor) {
+        //   // console.log('123')
+        //   setBarColor(hoverColor)
+        // }
         // div.transition()
         //     .duration(200)
         //     .style('opacity', 0.9)
@@ -93,9 +116,14 @@ const BarChart = props => {
         //     .style('left', (d3.event.pageX) + 'px')
         //     .style('top', (d3.event.pageY - 28) + 'px')
       })
-      .on('mouseout', (d, i) => {
-        if (hoverColor) setBarColor(barColor)
-        // d3.select(this).transition().attr('fill', barColor)
+      .on('mouseout', function () {
+        // if (hoverColor) {
+        //   d3.select(this).attr("fill", function() {
+        //       return "" + colorScale(this.id) + "";
+        //   });
+        // }
+        // setBarColor(barColor)
+        d3.select(this).transition().attr('fill', barColor)
           // .style('fill', d => {
           //   return d[yKey] === d3.max(data, d => { return d[yKey] })
           //     ? HIGHLIGHT_COLOR : BAR_COLOR
@@ -105,8 +133,6 @@ const BarChart = props => {
         // //   .duration(500)
         // //   .style('opacity', 0)
       })
-      .style('fill', d => barColor)
-      .attr('class', 'bar')
       .style('display', d => { return d[yKey] === null ? 'none' : null })
       // .style('fill', d => {
       //   return d[yKey] === d3.max(data, d => { return d[yKey] })
@@ -123,8 +149,9 @@ const BarChart = props => {
       })
       .attr('y', d => { return yScale(d[yKey]) })
       .attr('height', d => { return height - yScale(d[yKey]) })
+    // setBarRef(bar)
+    // setBarColor(barColor)
   }
-
   return (
     <div id={chartId} ref={chartRef} style={{ height: '90%' }} />
   )

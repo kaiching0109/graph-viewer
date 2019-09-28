@@ -24,7 +24,6 @@ const DataBuilder = ({ children }) => {
   const [content, setContent] = useState([])
   const [filterContent, setFilterContent] = useState([])
   const [dropdownItems, setDropdownItems] = useState([])
-  // const [xAxisLabel, setxAxisLabel] = useState([])
   const [interval, setInterval] = useState(2)
   const [min, setMin] = useState(1)
   const [max, setMax] = useState(10)
