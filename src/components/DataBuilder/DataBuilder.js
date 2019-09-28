@@ -119,7 +119,7 @@ const DataBuilder = ({ children }) => {
   return (
     !loading && (
       <Card header={HappinessScoreDistributionHeader} footer={<input type='range' value={interval} min={min} max={max} step='1' onChange={e => setInterval(parseInt(e.target.value))} />}>
-        <BarChart chartId='happiness-score-bin' subChartId='sub-happiness-score-bin' data={filterContent} xKey='label' yKey='value' />
+        <BarChart chartId='happiness-score-bin' subChartId='sub-happiness-score-bin' data={filterContent} xKey='label' yKey='value' hoverColor='black' />
       </Card>
     )
   )
