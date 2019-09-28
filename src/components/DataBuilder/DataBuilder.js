@@ -89,6 +89,10 @@ const DataBuilder = ({ children }) => {
     }
   }, [content, interval])
 
+  const addIntervalHandler = () => { if (interval < max) setInterval(interval + 1) }
+
+  const reduceIntervalHandler = () => { if (interval > min) setInterval(interval - 1) }
+
   const HappinessScoreDistributionHeader = (
     <div className='row'>
       <div className='col-sm-12' style={{ display: 'block' }}>
@@ -107,7 +111,17 @@ const DataBuilder = ({ children }) => {
   )
 
   const HappinessScoreDistributionFooter = (
-    <input type='range' class='custom-range' value={interval} min={min} max={max} step='0.5' onChange={e => setInterval(parseInt(e.target.value))} slider-tooltip='show' />
+    <div className='row'>
+      <div className="col-sm-2">
+        <button type="button" class="btn btn-primary" onClick={reduceIntervalHandler}>-</button>
+      </div>
+      <div className="col-sm">
+        <input type='range' class='custom-range' value={interval} min={min} max={max} step='0.5' onChange={e => setInterval(parseInt(e.target.value))} slider-tooltip='show' />
+      </div>
+      <div className="col-sm-2">
+        <button type="button" class="btn btn-primary" onClick={addIntervalHandler}>+</button>
+      </div>
+    </div>
     // <input type='range' value={interval} min={min} max={max} step='1' onChange={e => setInterval(parseInt(e.target.value))} />
   )
 
