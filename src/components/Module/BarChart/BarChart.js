@@ -74,6 +74,7 @@ const BarChart = props => {
       .enter()
       .append('text')
       .attr('class', 'xKey')
+      .style('fill', 'white')
       .style('display', d => { return d[yKey] === null ? 'none' : null })
       .attr('x', d => { return xScale(d[xKey]) + (xScale.bandwidth() / 2) - 8 })
       // .style('fill', d => {
@@ -88,6 +89,7 @@ const BarChart = props => {
       .text(d => { return d[yKey] })
       .attr('y', d => { return yScale(d[yKey]) })
       .attr('dy', '-.7em')
+      // .attr('color', 'white')
   }
 
   // useEffect(() => {
@@ -180,9 +182,12 @@ const setAxis = (svg, width, height, xScale, yScale, xKey, yKey, data) => {
   svg.append('g')
     .attr('class', 'x axis')
     .attr('transform', 'translate(0,' + height + ')')
+    .attr('color', 'white')
     .call(xAxis)
   svg.append('g')
     .attr('class', 'y axis')
+    // .attr('transform', 'translate(10,' + height + ')')
+    .attr('color', 'white')
     .call(yAxis)
   return { xScale, yScale }
 }

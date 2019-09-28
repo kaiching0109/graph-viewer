@@ -5,6 +5,8 @@ import { BarChart } from '../Module'
 import { Dropdown, DropdownButton } from 'react-bootstrap'
 import { Card } from '../../components/Base'
 
+const TITLE = 'Happiness Score Distribution'
+
 const DataBuilder = ({ children }) => {
   const data = useStaticQuery(graphql`
     query WorldHappinessQuery {
@@ -32,8 +34,6 @@ const DataBuilder = ({ children }) => {
   useEffect(() => {
     let temp = [] // an array to score all points by index, e.g  temp[0] represent the number of having 1 points
     let regions = [{ label: 'ALL', value: 'all' }]
-    // if (loadData) {
-    console.log('Update content')
     let result = []
     data.allWorldHappiness2015Json.edges
       .map(({ node: { Happiness_Score: score, Region: region } }) => {
@@ -67,7 +67,6 @@ const DataBuilder = ({ children }) => {
   useEffect(() => {
     // To produce
     if (content.length > 0) {
-      console.log('Update filter content')
       let counter = 0
       let order = []
       let ref = {}
@@ -90,15 +89,11 @@ const DataBuilder = ({ children }) => {
     }
   }, [content, interval])
 
-  // useEffect(() => {
-  //   console.log({ filterContent })
-  // }, [filterContent])
-
   const HappinessScoreDistributionHeader = (
     <div className='row'>
       <div className='col-sm-12' style={{ display: 'block' }}>
-        <p style={{ display: 'inline-block' }}>Title</p>
-        <DropdownButton id='dropdown-basic-button' style={{ float: 'right', display: 'inline-block' }}>
+        <p style={{ display: 'inline-block' }}>{TITLE}</p>
+        <DropdownButton id='dropdown-basic-button' style={{ float: 'right', display: 'inline-block', paddingRight: '5rem'}} title={selectRegion}>
           {dropdownItems.map((item, i) => {
             const { label, value } = item
             return <Dropdown.Item key={i} onClick={() => {
@@ -111,10 +106,15 @@ const DataBuilder = ({ children }) => {
     </div>
   )
 
+  const HappinessScoreDistributionFooter = (
+    <input type='range' class='custom-range' value={interval} min={min} max={max} step='0.5' onChange={e => setInterval(parseInt(e.target.value))} slider-tooltip='show' />
+    // <input type='range' value={interval} min={min} max={max} step='1' onChange={e => setInterval(parseInt(e.target.value))} />
+  )
+
   return (
     !loading && (
-      <Card header={HappinessScoreDistributionHeader} footer={<input type='range' value={interval} min={min} max={max} step='1' onChange={e => setInterval(parseInt(e.target.value))} />}>
-        <BarChart chartId='happiness-score-bin' subChartId='sub-happiness-score-bin' data={filterContent} xKey='label' yKey='value' hoverColor='black' />
+      <Card header={HappinessScoreDistributionHeader} footer={HappinessScoreDistributionFooter}>
+        <BarChart chartId='happiness-score-bin' subChartId='sub-happiness-score-bin' data={filterContent} xKey='label' yKey='value' hoverColor='#c467d4' />
       </Card>
     )
   )
