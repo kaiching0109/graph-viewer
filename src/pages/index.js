@@ -20,16 +20,6 @@ const IndexPage = () => {
               <div className='col-sm'>
                 <DataBuilder />
               </div>
-              <div className='col-sm'>
-                <Card header='hello'>
-                  <p>What's up</p>
-                </Card>
-              </div>
-              <div className='col-sm'>
-                <Card header='hello'>
-                  <p>What's up</p>
-                </Card>
-              </div>
             </div>
           </div>
         </div>

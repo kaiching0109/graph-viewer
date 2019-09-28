@@ -29,10 +29,6 @@ const DataBuilder = ({ children }) => {
   const [max, setMax] = useState(10)
   const [selectRegion, setSelectRegion] = useState('all')
 
-  // useEffect(()=> {
-  //
-  // })
-
   useEffect(() => {
     let temp = [] // an array to score all points by index, e.g  temp[0] represent the number of having 1 points
     let regions = [{ label: 'ALL', value: 'all' }]
