@@ -13,6 +13,17 @@ import { Menu } from './Module'
 // import Header from "./header"
 // import "./layout.css"
 
+const menuItems = [
+  {
+    title: 'LAB01',
+    link: 'lab01'
+  },
+  {
+    title: 'LAB02',
+    link: 'lab02'
+  }
+]
+
 const Layout = ({ children }) => {
   const data = useStaticQuery(graphql`
     query SiteTitleQuery {
@@ -26,7 +37,7 @@ const Layout = ({ children }) => {
 
   return (
     <div className='layout'>
-      <Menu />
+      <Menu items={menuItems} />
       <div className='col-sm'>
         <header className='heading'>{data.site.siteMetadata.title}</header>
       </div>
