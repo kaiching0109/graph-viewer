@@ -5,7 +5,7 @@ import Image from '../components/image'
 import SEO from '../components/seo'
 import '../styles/index.scss'
 import { Card } from '../components/Base'
-import DataBuilder from '../components/DataBuilder'
+import { DataBuilder } from '../components/DataBuilder'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import WindowDimensionsContextProvider from '../context/window-dimensions-context'
 

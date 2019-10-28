@@ -12,9 +12,6 @@ const BarChart = props => {
   const [height, setHeight] = useState(null)
   const [loading, setLoading] = useState(true)
   const chartRef = useRef(null)
-  // const colorScale = d3.schemeCategory20()
-  // const subChartRef = useRef(null)
-  const [barRef, setBarRef] = useState([])
   const [barColor, setBarColor] = useState(color || BAR_COLOR)
   // const hoverColor = useState(hoverColor || null)
 
