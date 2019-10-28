@@ -13,7 +13,7 @@ const Lab02Page = () => {
         <div className='graph-container'>
           <div className='u-center-text'>
             <div className='row'>
-              // <ScatterplotBuilder />
+              <ScatterplotBuilder />
             </div>
           </div>
         </div>

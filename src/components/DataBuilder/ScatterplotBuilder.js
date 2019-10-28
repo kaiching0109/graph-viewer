@@ -116,8 +116,6 @@ const ScatterplotBuilder = ({ children }) => {
               <Dropdown.Item
                 key={i} onClick={() => {
                   setSelectY(value)
-                // console.log(value)
-                // setSelectRegion(value)
                 }}>
                 {label}
               </Dropdown.Item>
@@ -135,8 +133,9 @@ const ScatterplotBuilder = ({ children }) => {
           chartId='scatter'
           xLabel={selectX}
           yLabel={selectY}
-          xValues={xContent}
-          yValues={yContent}
+          xKey={selectX}
+          yKey={selectY}
+          content={content}
           hoverColor='#c467d4'
         />
       </Card>
