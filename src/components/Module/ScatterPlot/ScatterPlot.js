@@ -11,7 +11,6 @@ const ScatterPlot = (props) => {
   const chartRef = useRef(null)
 
   useEffect(() => {
-    console.log('INIT')
     const handleResize = () => {
       const newWidth = chartRef.current.parentNode.clientWidth * 0.95
       const newHeight = chartRef.current.parentNode.clientHeight * 0.9
@@ -90,7 +89,6 @@ const ScatterPlot = (props) => {
       .enter()
       .append('circle')
       .attr('cx', function (d) {
-        console.log({ d })
         return xScale(d[xKey])
       })
       .attr('cy', function (d) { return yScale(d[yKey]) })

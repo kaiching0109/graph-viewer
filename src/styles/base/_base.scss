@@ -16,6 +16,12 @@ body {
   // height: 100%;
 }
 
+.layout {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
 // and responsive to
 @media (max-width: 800px) {
   html {
