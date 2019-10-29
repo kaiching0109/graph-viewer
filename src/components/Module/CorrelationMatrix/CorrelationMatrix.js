@@ -37,7 +37,6 @@ const CorrelationMatrix = (props) => {
     }
   }, [chartRef])
 
-
   useEffect(() => {
     if (content && headers && chartId && width && height) {
       if (!loading) {
@@ -97,7 +96,7 @@ const CorrelationMatrix = (props) => {
       .call(yAxis)
 
     svg.selectAll('rect')
-      .data(grid, function (d) { return d.column_x + d.column_y })
+      .data(grid, function (d) { return d.columnx + d.columny })
       .enter().append('rect')
       .attr('x', function (d) { return x(d.column) })
       .attr('y', function (d) { return y(d.row) })
@@ -108,11 +107,49 @@ const CorrelationMatrix = (props) => {
       .attr('transform', 'translate(35, 0)')
       .style('opacity', 1)
 
-    svg.selectAll('rect')
+    const legendTop = 15
+    const legendHeight = 15
+
+    const legendSvg = d3.select('#legend').append('svg')
+      .attr('width', width)
+      .attr('height', legendHeight + legendTop)
+      .append('g')
+      .attr('transform', 'translate(' + 0 + ', ' + legendTop + ')')
+
+    const defs = legendSvg.append('defs')
+
+    const gradient = defs.append('linearGradient')
+      .attr('id', 'linear-gradient')
+
+    const stops = [{ offset: 0, color: 'tomato', value: extent[0] }, { offset: 0.5, color: 'white', value: 0 }, { offset: 1, color: 'steelblue', value: extent[1] }]
+
+    gradient.selectAll('stop')
+      .data(stops)
+      .enter().append('stop')
+      .attr('offset', function (d) { return (100 * d.offset) + '%' })
+      .attr('stop-color', function (d) { return d.color })
+
+    legendSvg.append('rect')
+      .attr('width', width)
+      .attr('height', legendHeight)
+      .style('fill', 'url(#linear-gradient)')
+
+    legendSvg.selectAll('text')
+      .attr('color', 'white')
+      .data(stops)
+      .enter().append('text')
+      .attr('x', function (d) { return width * d.offset })
+      .attr('dy', -3)
+      .style('text-anchor', function (d, i) { return i === 0 ? 'start' : i === 1 ? 'middle' : 'end' })
+      .text(function (d, i) { return d.value.toFixed(2) + (i === 2 ? '>' : '') })
+      .style('fill', 'white')
   }
 
   return (
-    <div id={chartId} ref={chartRef} style={{ height: '100%' }} />
+    <>
+      <div id={chartId} ref={chartRef} style={{ height: '100%' }} />
+      <div id='legend' />
+    </>
   )
 }
 

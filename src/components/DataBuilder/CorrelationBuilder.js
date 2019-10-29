@@ -42,8 +42,7 @@ const CorrelationMatrixBuilder = ({ children }) => {
             Rent_Index,
             Groceries_Index,
             Restaurant_Price_Index,
-            Local_Purchasing_Power_Index,
-            Region
+            Local_Purchasing_Power_Index
           }
         }
       }
