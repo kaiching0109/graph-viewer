@@ -4,7 +4,7 @@ import * as d3 from 'd3'
 const marginHeight = 70
 
 const ScatterPlot = (props) => {
-  const { chartId, xLabel, yLabel, xKey, yKey, content } = props
+  const { chartId, xLabel, yLabel, xKey, yKey, content, color } = props
   const [width, setWidth] = useState(null)
   const [height, setHeight] = useState(null)
   const [loading, setLoading] = useState(true)
@@ -95,11 +95,11 @@ const ScatterPlot = (props) => {
       })
       .attr('cy', function (d) { return yScale(d[yKey]) })
       .attr('r', 3.5)
-      .style('fill', '#white')
+      .style('fill', color)
   }
 
   return (
-    <div id={chartId} ref={chartRef} style={{ height: '100%', top: '50'}} />
+    <div id={chartId} ref={chartRef} style={{ height: '100%', top: '50' }} />
   )
 }
 

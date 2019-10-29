@@ -40,8 +40,6 @@ const ScatterplotBuilder = ({ children }) => {
   const [yDropdown, setYDropdown] = useState([])
   const [selectX, setSelectX] = useState(null)
   const [selectY, setSelectY] = useState(null)
-  const [xContent, setXContent] = useState([])
-  const [yContent, setYContent] = useState([])
 
   useEffect(() => {
     const filterContent = data.allMerged2016Json.edges.map(({ node }) => ({ ...node }))
@@ -64,7 +62,6 @@ const ScatterplotBuilder = ({ children }) => {
       setSelectY(dropdownItems[1].value)
     } else if (selectX !== null && selectY !== null && dropdownItems.length > 1) {
       renderDropdowns()
-      renderContent()
       setLoading(false)
     }
   }, [selectX, selectY, dropdownItems])
@@ -82,34 +79,24 @@ const ScatterplotBuilder = ({ children }) => {
     setYDropdown(yItems)
   }
 
-  function renderContent () {
-    console.log({ content })
-    const xItems = content.map(row => row[selectX])
-    const yItems = content.map(row => row[selectY])
-    setXContent(xItems)
-    setYContent(yItems)
-  }
-
   const Header = (
     <div className='row'>
       <div className='col-sm-12' style={{ display: 'block' }}>
         <p style={{ display: 'inline-block' }}>{TITLE}</p>
-        <DropdownButton id='dropdown-basic-button' style={{ float: 'right', display: 'inline-block', paddingRight: '5rem'}} title={selectX}>
+        <DropdownButton id='dropdown-basic-button' style={{ float: 'right', display: 'inline-block', paddingRight: '5rem' }} title={`X: ${selectX}`}>
           {xDropdown.map((item, i) => {
             const { label, value } = item
             return (
               <Dropdown.Item
                 key={i} onClick={() => {
                   setSelectX(value)
-                // console.log(value)
-                // setSelectRegion(value)
                 }}>
                 {label}
               </Dropdown.Item>
             )
           })}
         </DropdownButton>
-        <DropdownButton id='dropdown-basic-button' style={{ float: 'right', display: 'inline-block', paddingRight: '5rem'}} title={selectY}>
+        <DropdownButton id='dropdown-basic-button' style={{ float: 'right', display: 'inline-block', paddingRight: '5rem' }} title={`Y: ${selectY}`}>
           {yDropdown.map((item, i) => {
             const { label, value } = item
             return (
@@ -137,6 +124,7 @@ const ScatterplotBuilder = ({ children }) => {
           yKey={selectY}
           content={content}
           hoverColor='#c467d4'
+          color='rgb(147, 38, 103)'
         />
       </Card>
     )
