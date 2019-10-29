@@ -5,7 +5,7 @@ import { CorrelationMatrix } from '../Module'
 import { Dropdown, DropdownButton } from 'react-bootstrap'
 import { Card } from '../../components/Base'
 
-const TITLE = 'Attributes Relationship Scatterplot'
+const TITLE = 'Correction Matrix Map'
 
 const LABEL_REF = {
   Happiness_Score: 'hs',
