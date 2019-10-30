@@ -1,0 +1,1 @@
+{"version":3,"sources":["webpack:///./src/pages/lab01.js"],"names":["indexPage"],"mappings":"0FAAA,oBACeA,YAAf","file":"component---src-pages-lab-01-js-8d00951d6fa5ba0fa4fa.js","sourcesContent":["import indexPage from './'\nexport default indexPage\n"],"sourceRoot":""}
