@@ -23,7 +23,7 @@ const Menu = ({ items }) => {
           {items.map(({ title, link }, i) => {
             return (
               <li className='menu__item' key={i}>
-                <a href={`${link}`} className='menu__link'>
+                <a href={`http://localhost:8000/${link}`} className='menu__link'>
                   <span>{i}</span>
                   {title}
                 </a>

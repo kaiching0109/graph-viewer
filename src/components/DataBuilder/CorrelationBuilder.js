@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 // import PropTypes from 'prop-types'
 import { useStaticQuery, graphql } from 'gatsby'
 import { CorrelationMatrix } from '../Module'
-import { Dropdown, DropdownButton } from 'react-bootstrap'
 import { Card } from '../../components/Base'
 
 const TITLE = 'Correction Matrix Map'
