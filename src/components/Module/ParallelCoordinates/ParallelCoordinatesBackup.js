@@ -3,7 +3,7 @@ import * as d3 from 'd3'
 
 const ParallelCoordinates = (props) => {
   const { headers, content, chartId, labelRef } = props
-  // console.log({ labelRef })
+  console.log({ labelRef })
   const [width, setWidth] = useState(null)
   const [height, setHeight] = useState(null)
   const [loading, setLoading] = useState(true)
@@ -13,20 +13,19 @@ const ParallelCoordinates = (props) => {
     if (chartRef.current) {
       const handleResize = () => {
         const newWidth = chartRef.current.parentNode.clientWidth
-        const newHeight = chartRef.current.parentNode.clientHeight * 1.5
+        const newHeight = chartRef.current.parentNode.clientHeight
         if (newWidth !== width || newHeight !== height) {
-          // const dim = d3.min([newWidth, newHeight])
-          setWidth(newWidth)
-          setHeight(newHeight)
+          const dim = d3.min([newWidth, newHeight])
+          setWidth(dim)
+          setHeight(dim)
         }
       }
       setTimeout(() => {
         const newWidth = chartRef.current.parentNode.clientWidth
-        const newHeight = chartRef.current.parentNode.clientHeight * 1.5
-        console.log({newHeight})
-        // const dim = d3.min([newWidth, newHeight])
-        setWidth(newWidth)
-        setHeight(newHeight)
+        const newHeight = chartRef.current.parentNode.clientHeight
+        const dim = d3.min([newWidth, newHeight])
+        setWidth(dim)
+        setHeight(dim)
       }, 100)
       window.addEventListener('resize', handleResize)
       return () => {
@@ -36,7 +35,7 @@ const ParallelCoordinates = (props) => {
   }, [chartRef.current])
 
   useEffect(() => {
-    if (content && headers && chartId && height && width) {
+    if (content && headers && chartId && width && height) {
       console.log('Here')
       if (!loading) {
         const chart = d3.select(`#${chartId}`)
@@ -44,18 +43,18 @@ const ParallelCoordinates = (props) => {
       } else setLoading(false)
       drawChart()
     }
-  }, [headers, content, labelRef, height, width])
+  }, [width, height, headers, content, labelRef])
 
   function drawChart () {
     const margin = { top: 30, right: 50, bottom: 10, left: 50 }
-    let newWidth = 1800 - margin.left - margin.right
-    let newHeight = height - margin.top - margin.bottom
-    console.log({height})
+    // width = 460 - margin.left - margin.right,
+    // height = 400 - margin.top - margin.bottom;
+
     // append the svg object to the body of the page
     const svg = d3.select(`#${chartId}`)
       .append('svg')
-      .attr('width', newWidth)
-      .attr('height', newHeight)
+      .attr('width', width * 3)
+      .attr('height', height + margin.top + margin.bottom)
       .append('g')
       .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
 
@@ -70,27 +69,27 @@ const ParallelCoordinates = (props) => {
       const dimensions = labelRef
 
       // For each dimension, I build a linear scale. I store all in a y object
-      let y = {}
+      var y = {}
       for (const i in dimensions) {
         const name = dimensions[i]
         y[name] = d3.scaleLinear()
-        .domain([-4, 6]) // --> Same axis range for each group
-        // --> different axis range for each group --> .domain( [d3.extent(data, function(d) { return +d[name]; })] )
-        .range([height, 0])
+          .domain( [0,3] ) // --> Same axis range for each group
+          // --> different axis range for each group --> .domain( [d3.extent(data, function(d) { return +d[name]; })] )
+          .range([height, 0])
       }
-      // const axis_length = width * 2.8
+      const axis_length = width * 2.8
       // Build the X scale -> it find the best position for each Y axis
       const x = d3.scalePoint()
         // .range([0, width * 3])
-      .rangeRound([0, newWidth])
-      .domain(dimensions)
+        .rangeRound([0, axis_length])
+        .domain(dimensions)
 
     // Draw the lines
     svg
       .selectAll('myPath')
       .data(content)
       .enter().append('path')
-      .attr('transform', function (d) { return 'translate(' + x(d) + ')' })
+      .attr('transform', function (d) { return 'translate(' + x(d) * 1.3 + ')' })
       .attr('d', path)
       .style('fill', 'none')
       .style('stroke', '#69b3a2')
@@ -112,27 +111,21 @@ const ParallelCoordinates = (props) => {
       // .attr('y', -9)
       // .text(function (d) { return d })
       // .style('fill', 'black')
-      //
-      svg.selectAll('myAxis')
+      // 
+      svg.selectAll("myAxis")
         // For each dimension of the dataset I add a 'g' element:
         .data(dimensions).enter()
-        .append('g')
+        .append("g")
         // I translate this element to its right position on the x axis
-        .attr('transform', function (d) {
-          console.log({ d, 'x[d]': x(d) })
-          return 'translate(' + x(d) + ')'
-         })
+        .attr("transform", function(d) { return "translate(" + x(d) + ")"; })
         // And I build the axis with the call function
-        .each(function (d) {
-          console.log(d)
-          return d3.select(this).call(d3.axisLeft().scale(y[d]))
-        })
+        .each(function(d) { d3.select(this).call(d3.axisLeft().scale(y[d])); })
         // Add axis title
-        .append('text')
-        .style('text-anchor', 'middle')
-        .attr('y', -9)
-        .text(function (d) { return d; })
-        .style('fill', 'black')
+        .append("text")
+          .style("text-anchor", "middle")
+          .attr("y", -9)
+          .text(function(d) { return d; })
+          .style("fill", "black")
 
       function path (d) {
         return d3.line()(dimensions.map(function (p) { return [x(p), y[p](d[p])] }))
