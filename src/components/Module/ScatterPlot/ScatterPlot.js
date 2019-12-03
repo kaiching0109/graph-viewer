@@ -20,8 +20,8 @@ const ScatterPlot = (props) => {
       }
     }
     setTimeout(() => {
-      setWidth(chartRef.current.parentNode.clientWidth * 0.95)
-      setHeight(chartRef.current.parentNode.clientHeight * 0.9)
+      setWidth(chartRef.current.parentNode.clientWidth)
+      setHeight(chartRef.current.parentNode.clientHeight)
     }, 100)
     window.addEventListener('resize', handleResize)
     return () => {
@@ -40,24 +40,33 @@ const ScatterPlot = (props) => {
   }, [width, height, xKey, yKey, content])
 
   function drawChart () {
-    const xScale = d3.scaleLinear().range([0, width])
+    const margin = { top: 10, right: 30, bottom: 30, left: 60 }
+    const newWidth = width - margin.left - margin.right
+    const newHeight = height - margin.top - margin.bottom
+    const xScale = d3.scaleLinear()
+    console.log({ 'x-range': d3.extent(content, d => Number(d[xKey])) })
+    console.log({'x-range-min-max': [d3.min(content, d => Number(d[xKey])) - 1, d3.max(content, d => Number(d[xKey]))] + 1})
+    xScale
+      .domain([d3.min(content, d => Number(d[xKey])) - 1, d3.max(content, d => Number(d[xKey])) + 1])
+      .range([0, newWidth])
     // const xMap = function (d) { return xScale(xValues(d)) }
-    const xAxis = d3.axisBottom(xScale).tickSize([]).tickPadding(10)
-
-    const yScale = d3.scaleLinear().range([height, 0])
+    const xAxis = d3.axisBottom(xScale).tickPadding(1)
+    const yScale = d3.scaleLinear().range([newHeight, 0])
     // const yMap = function (d) { return yScale(yValues(d)) }
+    yScale.domain([d3.min(content, d => Number(d[yKey])), d3.max(content, d => Number(d[yKey]))])
     const yAxis = d3.axisLeft(yScale)
 
     const chart = d3.select(`#${chartId}`)
     const svg = chart
       .append('svg')
-      .attr('height', '100%')
-      .attr('width', '100%')
-      .attr('transform', 'translate(-5,' + 15 + ')')
+      .attr('height', height + margin.top + margin.bottom)
+      .attr('width', width + margin.left + margin.right)
+      .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
 
     svg.append('g')
-      .attr('class', 'x axis')
-      .attr('transform', 'translate(20,' + height + 10 + ')')
+      .attr('class', `x axis ${chartId}`)
+      .attr('width', '100%')
+      .attr('transform', 'translate(20,' + newHeight + ')')
       .attr('color', 'white')
       .call(xAxis)
       .append('text')
@@ -68,9 +77,9 @@ const ScatterPlot = (props) => {
       .text(xLabel)
 
     svg.append('g')
-      .attr('class', 'y axis')
+      .attr('class', `y axis ${chartId}`)
       .attr('color', 'white')
-      .attr('transform', 'translate(25,' + 2.5 + ')')
+      .attr('transform', 'translate(25,' + 10 + ')')
       .call(yAxis)
       .append('text')
       .attr('class', 'label')
@@ -80,19 +89,18 @@ const ScatterPlot = (props) => {
       .style('text-anchor', 'end')
       .text(yLabel)
 
-    xScale.domain(d3.extent(content, d => d[xKey])).nice()
-    yScale.domain(d3.extent(content, d => d[yKey])).nice()
-
     svg.append('g')
       .selectAll('dot')
       .data(content)
       .enter()
       .append('circle')
       .attr('cx', function (d) {
-        return xScale(d[xKey])
+        console.log({ x: d[xKey] })
+        // console.log({scale: xScale(d[xKey])})
+        return xScale(Number(d[xKey]))
       })
-      .attr('cy', function (d) { return yScale(d[yKey]) })
-      .attr('r', 3.5)
+      .attr('cy', function (d) { return yScale(Number(d[yKey])) })
+      .attr('r', 2.5)
       .style('fill', color)
   }
 

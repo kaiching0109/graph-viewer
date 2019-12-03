@@ -24,11 +24,13 @@ const CorrelationMatrix = (props) => {
         }
       }
       setTimeout(() => {
-        const newWidth = chartRef.current.parentNode.clientWidth
-        const newHeight = chartRef.current.parentNode.clientHeight
-        const dim = d3.min([newWidth, newHeight])
-        setWidth(dim)
-        setHeight(dim)
+        if (chartRef.current){
+          const newWidth = chartRef.current.parentNode.clientWidth
+          const newHeight = chartRef.current.parentNode.clientHeight
+          const dim = d3.min([newWidth, newHeight])
+          setWidth(dim)
+          setHeight(dim)
+        }
       }, 100)
       window.addEventListener('resize', handleResize)
       return () => {

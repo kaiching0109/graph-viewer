@@ -21,12 +21,13 @@ const ParallelCoordinates = (props) => {
         }
       }
       setTimeout(() => {
-        const newWidth = chartRef.current.parentNode.clientWidth
-        const newHeight = chartRef.current.parentNode.clientHeight * 1.5
-        console.log({newHeight})
-        // const dim = d3.min([newWidth, newHeight])
-        setWidth(newWidth)
-        setHeight(newHeight)
+        if (chartRef.current) {
+          const newWidth = chartRef.current.parentNode.clientWidth
+          const newHeight = chartRef.current.parentNode.clientHeight * 1.5
+          // const dim = d3.min([newWidth, newHeight])
+          setWidth(newWidth)
+          setHeight(newHeight)
+        }
       }, 100)
       window.addEventListener('resize', handleResize)
       return () => {

@@ -18,10 +18,12 @@
     "gatsby-plugin-sharp": "^2.2.25",
     "gatsby-plugin-typography": "^2.3.8",
     "gatsby-source-filesystem": "^2.1.26",
+    "gatsby-transformer-csv": "^2.1.19",
     "gatsby-transformer-json": "^2.1.4",
     "gatsby-transformer-sharp": "^2.2.16",
     "jeezy": "^1.13.1",
     "node-sass": "^4.12.0",
+    "numericjs": "^1.2.6",
     "prop-types": "^15.7.2",
     "rc-slider": "^8.7.1",
     "react": "^16.9.0",
@@ -29,6 +31,7 @@
     "react-dom": "^16.9.0",
     "react-helmet": "^5.2.1",
     "react-typography": "^0.16.19",
+    "svd-js": "^1.0.4",
     "typography": "^0.16.19"
   },
   "devDependencies": {
