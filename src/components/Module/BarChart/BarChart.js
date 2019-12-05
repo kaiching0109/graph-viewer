@@ -16,7 +16,7 @@ const BarChart = props => {
   // const hoverColor = useState(hoverColor || null)
 
   useEffect(() => {
-    console.log('INIT')
+    
     const handleResize = () => {
       const newWidth = chartRef.current.parentNode.clientWidth * 0.95
       const newHeight = chartRef.current.parentNode.clientHeight * 0.8
@@ -38,7 +38,7 @@ const BarChart = props => {
   useEffect(() => {
     if (data && chartId && width && height) {
       if (!loading) {
-        console.log('123123123')
+        
         const chart = d3.select(`#${chartId}`)
         if (chart) chart.selectAll('svg').remove()
       } else setLoading(false)
@@ -106,7 +106,7 @@ const BarChart = props => {
       .on('mouseover', function () {
         if (hoverColor) d3.select(this).attr('fill', hoverColor)
         // if (hoverColor) {
-        //   // console.log('123')
+        //   // 
         //   setBarColor(hoverColor)
         // }
         // div.transition()
@@ -211,6 +211,6 @@ const setSubBars = (svg, subChartId, width, height, xScale, yScale, xKey, yKey, 
 }
 
 export default React.memo(BarChart, (prevProps, props) => {
-  console.log({ prevProps: prevProps.data, props: props.data })
+  
   return prevProps.data === props.data
 })

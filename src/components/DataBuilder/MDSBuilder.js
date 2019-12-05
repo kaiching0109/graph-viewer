@@ -39,7 +39,7 @@ const MDSBuilder = ({ children }) => {
           Object.keys(key => Number(node[key]))
           return ({ ...node, index: i })
         })
-      console.log({ content })
+      
       // const headers = Object.keys(data.allMerged2016Json.edges[0].node)
       // const content = data.allMerged2016Json.edges
       //   .map(({ node }, i) => {
@@ -60,19 +60,11 @@ const MDSBuilder = ({ children }) => {
   //   if (formatContent.length > 0) {
   //     const pointsData = mdsClassic(formatContent)
   //     // let hello = numeric.transpose(pointsData)
-  //     // console.log({hello})
+  //     // 
   //     setLoading(false)
-  //     // console.log({ formatContent, content })
+  //     // 
   //   }
   // }, [formatContent])
-
-  function convertToCSV (arr) {
-    const array = []
-
-    return [Object.keys(arr[0])].concat(arr).map((it, i) => {
-      return Object.values(it)
-    })
-  }
 
   function mdsClassic (distances, dimensions) {
     dimensions = dimensions || 2;
@@ -92,11 +84,11 @@ const MDSBuilder = ({ children }) => {
         // totalMean = mean(rowMeans);
 
     // for (var i = 0; i < M.length; ++i) {
-      // console.log({totalMean, rowMeans, colMeans})
+      // 
       // calculate(M, totalMean, rowMeans, colMeans, i)
     // }
 
-    console.log({rowMeans})
+    
 
     // take the SVD of the double centred matrix, and return the
     // points from it
@@ -110,8 +102,8 @@ const MDSBuilder = ({ children }) => {
   function calculate (M, totalMean, rowMeans, colMeans, i) {
     for (var j =0; j < M[0].length; ++j) {
         // M[i][j] += totalMean - rowMeans[i] - colMeans[j]
-        // console.log({totalMean, rowMeans: rowMeans[i], colMeans: colMeans[j], i, j})
-        console.log(totalMean - rowMeans[i] - colMeans[j], i)
+        // 
+        
     }
   }
 

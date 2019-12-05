@@ -3,7 +3,7 @@ import * as d3 from 'd3'
 
 const ParallelCoordinates = (props) => {
   const { headers, content, chartId, labelRef } = props
-  // console.log({ labelRef })
+  // 
   const [width, setWidth] = useState(null)
   const [height, setHeight] = useState(null)
   const [loading, setLoading] = useState(true)
@@ -38,7 +38,7 @@ const ParallelCoordinates = (props) => {
 
   useEffect(() => {
     if (content && headers && chartId && height && width) {
-      console.log('Here')
+      
       if (!loading) {
         const chart = d3.select(`#${chartId}`)
         if (chart) chart.selectAll('svg').remove()
@@ -51,7 +51,7 @@ const ParallelCoordinates = (props) => {
     const margin = { top: 30, right: 50, bottom: 10, left: 50 }
     let newWidth = 1800 - margin.left - margin.right
     let newHeight = height - margin.top - margin.bottom
-    console.log({height})
+    
     // append the svg object to the body of the page
     const svg = d3.select(`#${chartId}`)
       .append('svg')
@@ -120,12 +120,12 @@ const ParallelCoordinates = (props) => {
         .append('g')
         // I translate this element to its right position on the x axis
         .attr('transform', function (d) {
-          console.log({ d, 'x[d]': x(d) })
+          
           return 'translate(' + x(d) + ')'
          })
         // And I build the axis with the call function
         .each(function (d) {
-          console.log(d)
+          
           return d3.select(this).call(d3.axisLeft().scale(y[d]))
         })
         // Add axis title

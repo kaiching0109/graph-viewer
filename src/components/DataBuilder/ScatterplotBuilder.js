@@ -68,7 +68,7 @@ const ScatterplotBuilder = ({ children }) => {
 
   // useEffect(() => {
   //   if (xContent.length > 0 && yContent.length > 0) {
-  //     console.log({ xContent, yContent })
+  //     
   //   }
   // }, [xContent, yContent])
 

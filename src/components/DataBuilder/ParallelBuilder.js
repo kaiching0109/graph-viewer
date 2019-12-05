@@ -70,7 +70,7 @@ const ParallelBuilder = ({ children }) => {
       const orders = Object.keys(corrMatrixSum)
         .sort((a, b) => (corrMatrixSum[a] < corrMatrixSum[b]) ? 1 : -1)
       setLabelRef(orders)
-      // console.log({ corrMatrixSum, corrMatrixRel, content, orders, sortedContent })
+      // 
     }
   }, [corrMatrix])
 

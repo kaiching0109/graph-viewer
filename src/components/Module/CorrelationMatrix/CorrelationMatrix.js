@@ -6,7 +6,7 @@ import * as chroma from 'chroma-js'
 
 const CorrelationMatrix = (props) => {
   const { headers, content, chartId, labelRef } = props
-  console.log({ labelRef })
+  
   const [width, setWidth] = useState(null)
   const [height, setHeight] = useState(null)
   const [loading, setLoading] = useState(true)
@@ -50,7 +50,7 @@ const CorrelationMatrix = (props) => {
   }, [width, height, headers, content])
 
   function drawChart () {
-    console.log({ headers })
+    
     const displayLabels = headers.map(header => labelRef[header])
     const corr = jz.arr.correlationMatrix(content, displayLabels)
     const extent = d3.extent(corr

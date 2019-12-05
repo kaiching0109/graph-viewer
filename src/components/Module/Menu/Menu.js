@@ -18,7 +18,7 @@ const Menu = ({ items }) => {
 
       <div className='menu__background'>&nbsp;</div>
 
-      <div className='menu__container' style={{ opacity: toggled ? 1 : 0 }}>
+      <div className='menu__container' style={ toggled ? ({ 'opacity' : 1, 'zIndex': 1 }) : ({ 'opacity' : 0, 'zIndex' : -1 })}>
         <ul class='menu__list'>
           {items.map(({ title, link }, i) => {
             return (

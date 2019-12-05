@@ -3,7 +3,7 @@ import * as d3 from 'd3'
 
 const ParallelCoordinates = (props) => {
   const { headers, content, chartId, labelRef } = props
-  console.log({ labelRef })
+  
   const [width, setWidth] = useState(null)
   const [height, setHeight] = useState(null)
   const [loading, setLoading] = useState(true)
@@ -36,7 +36,7 @@ const ParallelCoordinates = (props) => {
 
   useEffect(() => {
     if (content && headers && chartId && width && height) {
-      console.log('Here')
+      
       if (!loading) {
         const chart = d3.select(`#${chartId}`)
         if (chart) chart.selectAll('svg').remove()

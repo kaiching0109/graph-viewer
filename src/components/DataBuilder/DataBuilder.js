@@ -41,15 +41,15 @@ const DataBuilder = ({ children }) => {
         if (interval === max) index = 0
         // if (selectRegion) {
         const isFound = regions.find(_ => {
-          console.log(_, region)
+          
           return _.value === region.toLowerCase()
         })
         regions = isFound ? regions : [...regions, { label: region, value: region.toLowerCase() }]
         // }
         if (selectRegion !== 'all') {
-          console.log({ selectRegion, region })
+          
           if (selectRegion === region.toLowerCase()) {
-            // console.log('Update result')
+            // 
             if (result[index]) result[index] = [...result[index], { region }]
             else result[index] = [{ region }]
           }
@@ -70,22 +70,22 @@ const DataBuilder = ({ children }) => {
       let counter = 0
       let order = []
       let ref = {}
-      console.log({ content, interval })
+      
       for (let from = min; from <= max; from += interval) {
         let to = from + interval - 1
-        console.log({ from, to, min, max })
+        
         if (to > max) to = max
         const key = (from === to) ? `${to}` : `${from}-${to}`
         const value = content[counter++]
         ref[key] = value ? value.length : 0
         order.push(key)
       }
-      console.log({ ref })
+      
       const result = order.map(key => ({ label: key, value: ref[key] }))
-      // console.log({ content })
+      // 
       setFilterContent(result)
       setLoading(false)
-      console.log({ result })
+      
     }
   }, [content, interval])
 
@@ -101,7 +101,7 @@ const DataBuilder = ({ children }) => {
           {dropdownItems.map((item, i) => {
             const { label, value } = item
             return <Dropdown.Item key={i} onClick={() => {
-              console.log(value)
+              
               setSelectRegion(value)
             }}>{label}</Dropdown.Item>
           })}
