@@ -97,6 +97,13 @@ const MDSDisplay = props => {
     const focus = svg.append('g')
       .attr('class', 'focus')
       .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
+      .attr('fill', 'none')
+      // .axis line,
+      // .axis path {
+      //   fill: none;
+      //   stroke: #000;
+      //   shape-rendering: crispEdges;
+      // }
 
     let xRange = d3.extent(displayContent, function (d) { return Number(d.x) })
     let yRange = d3.extent(displayContent, function (d) { return Number(d.y) })
@@ -135,7 +142,7 @@ const MDSDisplay = props => {
       .call(yAxis)
 
     svg.append('g')
-      .attr('class', 'zoom')
+      // .attr('class', 'zoom')
       .selectAll('dot')
       .data(displayContent)
       .enter()
@@ -163,6 +170,7 @@ const MDSDisplay = props => {
       const context = brushSvg.append('g')
         .attr('class', 'context')
         .attr('transform', 'translate(' + margin.left + ', 0)')
+        .attr('fill', 'none')
 
       context
         .append('path')
