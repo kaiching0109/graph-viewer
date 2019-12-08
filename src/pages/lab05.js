@@ -1,7 +1,7 @@
 import React from 'react'
 import Layout from '../components/layout'
 import '../styles/index.scss'
-import { DataBuilder, ScatterplotBuilder, CorrelationBuilder, ParallelBuilder, MdsBrushBuilder } from '../components/DataBuilder'
+import { DataBuilder, ScatterplotBuilder, CorrelationBuilder, ParallelBuilder, MdsDistBuilder, MdsCorrBuilder } from '../components/DataBuilder'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import WindowDimensionsContextProvider from '../context/window-dimensions-context'
 
@@ -26,7 +26,10 @@ const Lab02Page = () => {
                 <ParallelBuilder />
               </div>
               <div className='row'>
-                <MdsBrushBuilder />
+                <MdsDistBuilder />
+              </div>
+              <div className='row'>
+                <MdsCorrBuilder />
               </div>
             </div>
           </div>

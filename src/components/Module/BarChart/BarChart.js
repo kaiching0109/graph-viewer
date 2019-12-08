@@ -16,7 +16,7 @@ const BarChart = props => {
   // const hoverColor = useState(hoverColor || null)
 
   useEffect(() => {
-    
+
     const handleResize = () => {
       const newWidth = chartRef.current.parentNode.clientWidth * 0.95
       const newHeight = chartRef.current.parentNode.clientHeight * 0.8
@@ -38,7 +38,6 @@ const BarChart = props => {
   useEffect(() => {
     if (data && chartId && width && height) {
       if (!loading) {
-        
         const chart = d3.select(`#${chartId}`)
         if (chart) chart.selectAll('svg').remove()
       } else setLoading(false)
@@ -74,10 +73,6 @@ const BarChart = props => {
       .style('fill', 'white')
       .style('display', d => { return d[yKey] === null ? 'none' : null })
       .attr('x', d => { return xScale(d[xKey]) + (xScale.bandwidth() / 2) - 8 })
-      // .style('fill', d => {
-      //   return d[yKey] === d3.max(data, d => { return d[yKey] })
-      //     ? HIGHLIGHT_COLOR : GREY_COLOR
-      // })
       .attr('y', d => { return height })
       .attr('height', 0)
       .transition()
@@ -105,39 +100,11 @@ const BarChart = props => {
       .attr('fill', barColor)
       .on('mouseover', function () {
         if (hoverColor) d3.select(this).attr('fill', hoverColor)
-        // if (hoverColor) {
-        //   // 
-        //   setBarColor(hoverColor)
-        // }
-        // div.transition()
-        //     .duration(200)
-        //     .style('opacity', 0.9)
-        // div	.html(formatTime(d.date) + '<br/>' + d.close)
-        //     .style('left', (d3.event.pageX) + 'px')
-        //     .style('top', (d3.event.pageY - 28) + 'px')
       })
       .on('mouseout', function () {
-        // if (hoverColor) {
-        //   d3.select(this).attr("fill", function() {
-        //       return "" + colorScale(this.id) + "";
-        //   });
-        // }
-        // setBarColor(barColor)
         d3.select(this).transition().attr('fill', barColor)
-          // .style('fill', d => {
-          //   return d[yKey] === d3.max(data, d => { return d[yKey] })
-          //     ? HIGHLIGHT_COLOR : BAR_COLOR
-          // })
-        // .attr('fill', 'white')
-        // // div.transition()
-        // //   .duration(500)
-        // //   .style('opacity', 0)
       })
       .style('display', d => { return d[yKey] === null ? 'none' : null })
-      // .style('fill', d => {
-      //   return d[yKey] === d3.max(data, d => { return d[yKey] })
-      //     ? HIGHLIGHT_COLOR : BAR_COLOR
-      // })
       .attr('x', d => { return xScale(d[xKey]) })
       .attr('width', xScale.bandwidth())
       .attr('y', d => { return height })
@@ -183,7 +150,7 @@ const setAxis = (svg, width, height, xScale, yScale, xKey, yKey, data) => {
     .call(xAxis)
   svg.append('g')
     .attr('class', 'y axis')
-    // .attr('transform', 'translate(10,' + height + ')')
+    .attr('transform', 'translate(30,' + 10 + ')')
     .attr('color', 'white')
     .call(yAxis)
   return { xScale, yScale }
@@ -193,7 +160,8 @@ const setSubBars = (svg, subChartId, width, height, xScale, yScale, xKey, yKey, 
   const chart = d3.select(`#${subChartId}`)
   svg = chart
     .append('svg')
-    .attr('height', '100%')
+    .attr('height', height + 100)
+    .attr('width', width)
   const xOverview = d3.scaleBand()
     .domain(data.map(function (d) { return d.label }))
     .range([0, width], 0.2)
@@ -211,6 +179,6 @@ const setSubBars = (svg, subChartId, width, height, xScale, yScale, xKey, yKey, 
 }
 
 export default React.memo(BarChart, (prevProps, props) => {
-  
+
   return prevProps.data === props.data
 })

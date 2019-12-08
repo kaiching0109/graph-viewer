@@ -8,6 +8,7 @@
     "bootstrap": "^4.3.1",
     "chroma-js": "^2.0.6",
     "d3": "^5.12.0",
+    "d3-tip": "^0.9.1",
     "data2grid": "^1.0.0",
     "gatsby": "^2.15.21",
     "gatsby-image": "^2.2.20",

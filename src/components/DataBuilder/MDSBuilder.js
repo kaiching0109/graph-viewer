@@ -19,7 +19,7 @@ const MDSBuilder = ({ children }) => {
   const [formatContent, setFormatContent] = useState([])
   const data = useStaticQuery(graphql`
     query AllMdsPoints {
-      allMdsPointsCsv {
+      allMdsPointsDistCsv {
         edges {
           node {
             x
@@ -39,7 +39,7 @@ const MDSBuilder = ({ children }) => {
           Object.keys(key => Number(node[key]))
           return ({ ...node, index: i })
         })
-      
+
       // const headers = Object.keys(data.allMerged2016Json.edges[0].node)
       // const content = data.allMerged2016Json.edges
       //   .map(({ node }, i) => {
@@ -60,9 +60,9 @@ const MDSBuilder = ({ children }) => {
   //   if (formatContent.length > 0) {
   //     const pointsData = mdsClassic(formatContent)
   //     // let hello = numeric.transpose(pointsData)
-  //     // 
+  //     //
   //     setLoading(false)
-  //     // 
+  //     //
   //   }
   // }, [formatContent])
 
@@ -84,11 +84,11 @@ const MDSBuilder = ({ children }) => {
         // totalMean = mean(rowMeans);
 
     // for (var i = 0; i < M.length; ++i) {
-      // 
+      //
       // calculate(M, totalMean, rowMeans, colMeans, i)
     // }
 
-    
+
 
     // take the SVD of the double centred matrix, and return the
     // points from it
@@ -102,8 +102,8 @@ const MDSBuilder = ({ children }) => {
   function calculate (M, totalMean, rowMeans, colMeans, i) {
     for (var j =0; j < M[0].length; ++j) {
         // M[i][j] += totalMean - rowMeans[i] - colMeans[j]
-        // 
-        
+        //
+
     }
   }
 

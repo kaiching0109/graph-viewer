@@ -8,7 +8,7 @@ import { Card } from '../../components/Base'
 const EUC_TITLE = 'MDS display (Euclidian distance)'
 // const CORR_TITLE = 'MDS display (Correlation distance)'
 
-const MDSBuilder = ({ children }) => {
+const MDSBuilder = ({ mode, children }) => {
   const [loading, setLoading] = useState(true)
   // const [mode, setMode] = useState(1) // 1 is Euclidian Dist, 0 is Corrections
   const [content, setContent] = useState([])
@@ -16,8 +16,8 @@ const MDSBuilder = ({ children }) => {
   // const [labelRef, setLabelRef] = useState([])
   // const [formatContent, setFormatContent] = useState([])
   const data = useStaticQuery(graphql`
-    query AllMdsBrushPoints {
-      allMdsPointsCsv {
+    query AllMdsDistPoints {
+      allMdsPointsDistCsv {
         edges {
           node {
             x
@@ -31,9 +31,9 @@ const MDSBuilder = ({ children }) => {
 
   useEffect(() => {
     // data.allPeopleCsv.nodes.length
-    if (data.allMdsPointsCsv.edges.length > 0) {
-      const headers = Object.keys(data.allMdsPointsCsv.edges[0].node)
-      const content = data.allMdsPointsCsv.edges
+    if (data.allMdsPointsDistCsv.edges.length > 0) {
+      const headers = Object.keys(data.allMdsPointsDistCsv.edges[0].node)
+      const content = data.allMdsPointsDistCsv.edges
         .map(({ node }, i) => {
           Object.keys(node).map(key => { node[key] = Number(node[key]) })
           return ({ ...node, index: i })
@@ -48,7 +48,7 @@ const MDSBuilder = ({ children }) => {
       setHeaders(headers)
       setLoading(false)
     }
-  }, [data.allPointsCsv])
+  }, [data.allMdsPointsDistCsv])
   // var xAxis = d3.axisBottom(x)
   //   xAxis2 = d3.axisBottom(x2)
   //   yAxis = d3.axisLeft(y)
@@ -78,7 +78,7 @@ const MDSBuilder = ({ children }) => {
     !loading && (
       <Card header={Header}>
         <MDSDisplay
-          chartId='mdsWithBrush'
+          chartId='mdsWithBrushDist'
           headers={headers}
           content={content}
           hoverColor='#c467d4'

@@ -9,7 +9,6 @@ const MDSDisplay = props => {
   const chartRef = useRef(null)
   const brushChartRef = useRef(null)
   const [displayContent, setDisplayContent] = useState([...content])
-  const [init, setInit] = useState(true)
   const [selection, setSelection] = useState([])
   const [rangeX, setRangeX] = useState([])
   const [rangeY, setRangeY] = useState([])
@@ -21,7 +20,6 @@ const MDSDisplay = props => {
       if (newWidth !== width || newHeight !== height) {
         setWidth(newWidth)
         setHeight(newHeight)
-        setInit(true)
       }
     }
     setTimeout(() => {
@@ -54,23 +52,13 @@ const MDSDisplay = props => {
     }
   }, [width, height, content, displayContent])
 
-  // useEffect(() => {
-  //   if (content && chartId && width && height) {
-  //     if (!init) {
-  //       const chart = d3.select(`#${chartId}`)
-  //       if (chart) chart.selectAll('svg').remove()
-  //       drawChart(false)
-  //     }
-  //   }
-  // }, [width, height, ])
-
   function drawChart (withBrush) {
     const margin = { top: 20, right: 20, bottom: 110, left: 40 }
     const margin2 = { top: 50, right: 20, bottom: 30, left: 40 }
     const chart = d3.select(`#${chartId}`)
     const brushChart = d3.select(`#${chartId}-brush`)
     const width1 = width - margin.left - margin.right
-    const height1 = height * 9/10 - margin.top - margin.bottom
+    const height1 = height * 9 / 10 - margin.top - margin.bottom
     const height2 = height - height1 - margin.top - margin.bottom
 
     const svg = chart.append('svg')
@@ -123,7 +111,7 @@ const MDSDisplay = props => {
 
     if (withBrush) {
       drawBrush(svg)
-      setInit(false)
+      // setInit(false)
     }
 
     focus.append('path')
@@ -194,7 +182,7 @@ const MDSDisplay = props => {
 
     function brushended () {
       const d3Selection = d3.event.selection
-      if (!d3.event.sourceEvent || !d3Selection) return
+      if (!d3.event.sourceEvent || !d3Selection) return null
       else {
         setSelection(d3Selection)
         const selectedScores = d3Selection.map(d => {

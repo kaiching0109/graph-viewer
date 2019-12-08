@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react'
 import * as d3 from 'd3'
+import d3Tip from 'd3-tip' // works
 
 const ScatterPlot = (props) => {
   const { chartId, xLabel, yLabel, xKey, yKey, content, color } = props
@@ -61,6 +62,19 @@ const ScatterPlot = (props) => {
       .attr('width', width + margin.left + margin.right)
       .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
 
+    const tip = d3Tip().attr('class', 'd3-tip').direction('e').offset([0, 5])
+      .html(function (d) {
+        // let content = '<span style="margin-left: 2.5px;"><b>' + d.key + '</b></span><br>'
+        const content = `
+            <table style='margin-top: 2.5px;'>
+                    <tr><td>${xKey}: </td><td style='text-align: right'>` + d3.format('.2f')(d[xKey]) + `</td></tr>
+                    <tr><td>${yKey}: </td><td style='text-align: right'>` + d3.format('.2f')(d[yKey]) + `</td></tr>
+            </table>
+            `
+        return content
+      })
+    svg.call(tip)
+
     svg.append('g')
       .attr('class', `x axis ${chartId}`)
       .attr('width', '100%')
@@ -98,8 +112,10 @@ const ScatterPlot = (props) => {
         return xScale(Number(d[xKey]))
       })
       .attr('cy', function (d) { return yScale(Number(d[yKey])) })
-      .attr('r', 2.5)
+      .attr('r', 4)
       .style('fill', color)
+      .on('mouseover', tip.show)
+      .on('mouseout', tip.hide)
   }
 
   return (
