@@ -3,6 +3,7 @@ import * as jz from 'jeezy'
 import * as d3 from 'd3'
 import * as data2grid from 'data2grid'
 import * as chroma from 'chroma-js'
+import d3Tip from 'd3-tip'
 
 const CorrelationMatrix = (props) => {
   const { headers, content, chartId, labelRef } = props
@@ -43,7 +44,11 @@ const CorrelationMatrix = (props) => {
     if (content && headers && chartId && width && height) {
       if (!loading) {
         const chart = d3.select(`#${chartId}`)
-        if (chart) chart.selectAll('svg').remove()
+        const legend = d3.select('#legend')
+        if (chart) {
+          chart.selectAll('svg').remove()
+          legend.selectAll('svg').remove()
+        }
       } else setLoading(false)
       drawChart()
     }
@@ -97,6 +102,18 @@ const CorrelationMatrix = (props) => {
       .attr('transform', 'translate(30,0)')
       .call(yAxis)
 
+    const tip = d3Tip().attr('class', 'd3-tip').direction('e').offset([0, 5])
+      .html(function (d) {
+        // let content = '<span style="margin-left: 2.5px;"><b>' + d.key + '</b></span><br>'
+        const content = `
+            <table style='margin-top: 2.5px;'>
+                    <tr><td>Corr: </td><td style='text-align: right'>` + d3.format('.2f')(d.correlation) + `</td></tr>
+            </table>
+            `
+        return content
+      })
+    svg.call(tip)
+
     svg.selectAll('rect')
       .data(grid, function (d) { return d.columnx + d.columny })
       .enter().append('rect')
@@ -108,6 +125,8 @@ const CorrelationMatrix = (props) => {
       .style('opacity', 1e-6)
       .attr('transform', 'translate(35, 0)')
       .style('opacity', 1)
+      .on('mouseover', tip.show)
+      .on('mouseout', tip.hide)
 
     const legendTop = 15
     const legendHeight = 15

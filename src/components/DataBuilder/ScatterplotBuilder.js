@@ -66,12 +66,6 @@ const ScatterplotBuilder = ({ children }) => {
     }
   }, [selectX, selectY, dropdownItems])
 
-  // useEffect(() => {
-  //   if (xContent.length > 0 && yContent.length > 0) {
-  //     
-  //   }
-  // }, [xContent, yContent])
-
   function renderDropdowns () {
     const yItems = dropdownItems.filter(({ label, value }) => selectX !== value)
     const xItems = dropdownItems.filter(({ label, value }) => selectY !== value)
@@ -116,16 +110,30 @@ const ScatterplotBuilder = ({ children }) => {
   return (
     !loading && (
       <Card header={Header}>
-        <ScatterPlot
-          chartId='scatter'
-          xLabel={selectX}
-          yLabel={selectY}
-          xKey={selectX}
-          yKey={selectY}
-          content={content}
-          hoverColor='#c467d4'
-          color='rgb(147, 38, 103)'
-        />
+        <div className='row' style={{ height: '100%' }}>
+          <div className='col-sm-9 col-md-9' style={{ hegiht: '100%' }}>
+            <ScatterPlot
+              chartId='scatter'
+              xLabel={selectX}
+              yLabel={selectY}
+              xKey={selectX}
+              yKey={selectY}
+              selector='Region'
+              content={content}
+              hoverColor='#c467d4'
+              color='rgb(147, 38, 103)'
+            />
+          </div>
+          <div className='col-sm-3 col-md-3'>
+            <div id='table'>
+              <table>
+                <tr>
+                  <th>Regions</th>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
       </Card>
     )
   )

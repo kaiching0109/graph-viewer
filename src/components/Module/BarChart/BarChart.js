@@ -18,16 +18,16 @@ const BarChart = props => {
   useEffect(() => {
 
     const handleResize = () => {
-      const newWidth = chartRef.current.parentNode.clientWidth * 0.95
-      const newHeight = chartRef.current.parentNode.clientHeight * 0.8
+      const newWidth = chartRef.current.parentNode.clientWidth
+      const newHeight = chartRef.current.parentNode.clientHeight
       if (newWidth !== width || newHeight !== height) {
         setWidth(newWidth)
         setHeight(newHeight)
       }
     }
     setTimeout(() => {
-      setWidth(chartRef.current.parentNode.clientWidth * 0.95)
-      setHeight(chartRef.current.parentNode.clientHeight * 0.8)
+      setWidth(chartRef.current.parentNode.clientWidth)
+      setHeight(chartRef.current.parentNode.clientHeight)
     }, 100)
     window.addEventListener('resize', handleResize)
     return () => {
@@ -57,13 +57,14 @@ const BarChart = props => {
     const chart = d3.select(`#${chartId}`)
     let svg = chart
       .append('svg')
-      .attr('height', '100%')
-      .attr('width', '100%')
-      // .attr('transform', 'translateX(100rem)')
-    const { xScale, yScale } = getScales(width, height, xKey, yKey, data)
-    setAxis(svg, width, height, xScale, yScale, xKey, yKey, data)
+      .attr('height', height)
+      .attr('width', width)
+    const newHeight = height * 0.95
+    const newWidth = width
+    const { xScale, yScale } = getScales(newWidth, newHeight, xKey, yKey, data)
+    setAxis(svg, newWidth, newHeight, xScale, yScale, xKey, yKey, data)
     // svg = svg.append('g')
-    setBars(svg, width, height, xScale, yScale, xKey, yKey, data)
+    setBars(svg, newWidth, newHeight, xScale, yScale, xKey, yKey, data)
     // setSubBars(svg, subChartId, width, height, xScale, yScale, xKey, yKey, data)
     svg.selectAll(xKey)
       .data(data)
@@ -73,7 +74,7 @@ const BarChart = props => {
       .style('fill', 'white')
       .style('display', d => { return d[yKey] === null ? 'none' : null })
       .attr('x', d => { return xScale(d[xKey]) + (xScale.bandwidth() / 2) - 8 })
-      .attr('y', d => { return height })
+      .attr('y', d => { return newHeight })
       .attr('height', 0)
       .transition()
       .duration(750)

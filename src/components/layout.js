@@ -21,6 +21,10 @@ const menuItems = [
   {
     title: 'LAB02',
     link: 'lab02'
+  },
+  {
+    title: 'LAB05',
+    link: 'lab05'
   }
 ]
 

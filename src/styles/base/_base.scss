@@ -6,15 +6,31 @@
   box-sizing: inherit;
 }
 
-html {
+html, body, #___gatsby {
   font-size: 62.5%; /* 10/16 = 0.625, we wants 10px as default for example */
-  height: 100vh;
+  // height: 100vh;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
 }
 
 body {
   box-sizing: border-box;
-  // height: 100%;
+  margin: 0px;
 }
+
+table, th, td {
+  color: white;
+  border-color: white;
+}
+
+// #___gatsby > * {
+//     height: 100%;
+//   }
+//
+//   div[role="group"][tabindex] {
+//       height: 100%;
+//   }
 
 .layout {
   display: flex;

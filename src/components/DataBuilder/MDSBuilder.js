@@ -32,9 +32,9 @@ const MDSBuilder = ({ children }) => {
 
   useEffect(() => {
     // data.allPeopleCsv.nodes.length
-    if (data.allMdsPointsCsv.edges.length > 0) {
-      const headers = Object.keys(data.allMdsPointsCsv.edges[0].node)
-      const content = data.allMdsPointsCsv.edges
+    if (data.allMdsPointsDistCsv.edges.length > 0) {
+      const headers = Object.keys(data.allMdsPointsDistCsv.edges[0].node)
+      const content = data.allMdsPointsDistCsv.edges
         .map(({ node }, i) => {
           Object.keys(key => Number(node[key]))
           return ({ ...node, index: i })

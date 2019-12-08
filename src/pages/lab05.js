@@ -23,13 +23,12 @@ const Lab02Page = () => {
                 <CorrelationBuilder />
               </div>
               <div className='row'>
-                <ParallelBuilder />
-              </div>
-              <div className='row'>
-                <MdsDistBuilder />
-              </div>
-              <div className='row'>
-                <MdsCorrBuilder />
+                <div className='col-sm-6 col-md-6'>
+                  <MdsDistBuilder />
+                </div>
+                <div className='col-sm-6 col-md-6'>
+                  <MdsCorrBuilder />
+                </div>
               </div>
             </div>
           </div>

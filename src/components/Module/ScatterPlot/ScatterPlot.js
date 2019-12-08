@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react'
 import * as d3 from 'd3'
-import d3Tip from 'd3-tip' // works
+import d3Tip from 'd3-tip'
 
 const ScatterPlot = (props) => {
   const { chartId, xLabel, yLabel, xKey, yKey, content, color } = props
@@ -8,6 +8,7 @@ const ScatterPlot = (props) => {
   const [height, setHeight] = useState(null)
   const [loading, setLoading] = useState(true)
   const chartRef = useRef(null)
+  const [selectRegion, setSelectRegion] = useState([])
 
   useEffect(() => {
     const handleResize = () => {
@@ -64,7 +65,7 @@ const ScatterPlot = (props) => {
 
     const tip = d3Tip().attr('class', 'd3-tip').direction('e').offset([0, 5])
       .html(function (d) {
-        // let content = '<span style="margin-left: 2.5px;"><b>' + d.key + '</b></span><br>'
+        // let content = '<span style='margin-left: 2.5px;'><b>' + d.key + '</b></span><br>'
         const content = `
             <table style='margin-top: 2.5px;'>
                     <tr><td>${xKey}: </td><td style='text-align: right'>` + d3.format('.2f')(d[xKey]) + `</td></tr>
@@ -73,7 +74,6 @@ const ScatterPlot = (props) => {
             `
         return content
       })
-    svg.call(tip)
 
     svg.append('g')
       .attr('class', `x axis ${chartId}`)
@@ -101,7 +101,7 @@ const ScatterPlot = (props) => {
       .style('text-anchor', 'end')
       .text(yLabel)
 
-    svg.append('g')
+    const circles = svg.append('g')
       .selectAll('dot')
       .data(content)
       .enter()
@@ -116,6 +116,100 @@ const ScatterPlot = (props) => {
       .style('fill', color)
       .on('mouseover', tip.show)
       .on('mouseout', tip.hide)
+
+    function highlightBrushedCircles () {
+      if (d3.event.selection != null) {
+        circles.attr('class', 'non_brushed')
+
+        const brushCoords = d3.brushSelection(this)
+
+        // style brushed circles
+        circles.filter(function () {
+          const cx = d3.select(this).attr('cx')
+          const cy = d3.select(this).attr('cy')
+          return isBrushed(brushCoords, cx, cy)
+        }).attr('class', 'brushed')
+      }
+    }
+
+    const brush = d3.brush()
+      .on('brush', highlightBrushedCircles)
+      .on('end', displayCluster)
+
+    svg
+      .call(brush)
+      .call(tip)
+
+    function displayCluster () {
+      if (!d3.event.selection) return
+      d3.select(this).call(brush.move, null)
+      const dBrushed = d3.selectAll('.brushed').data()
+      let regions = []
+      dBrushed.map(({ Region }) => {
+        if (regions.indexOf(Region) === -1) regions.push(Region)
+      })
+      // setSelectRegion(regions)
+      // const color = d3.schemeCategory10
+      const colorRef = {}
+      for (let i = 0; i < regions.length; i++) {
+        const region = regions[i]
+        colorRef[region] = 'hsl(' + Math.random() * 360 + ',100%,50%)'
+      }
+      circles.style('fill', function ({ Region }) {
+        if (regions.indexOf(Region) !== -1) {
+          // console.log({ Region, color: colorRef[Region] })
+          return colorRef[Region]
+        } else return color
+      })
+      if (regions.length > 0) {
+        clearTableRows()
+        regions.forEach(_ => populateTableRow(_, colorRef))
+      } else {
+        clearTableRows()
+      }
+    }
+
+    function clearTableRows () {
+      hideTableColNames()
+      d3.selectAll('.row-data').remove()
+    }
+
+    function hideTableColNames () {
+      d3.select('table').style('visibility', 'hidden')
+    }
+
+    function showTableColNames () {
+      d3.select('table').style('visibility', 'visible')
+    }
+
+    function populateTableRow (dRow, colorRef) {
+      showTableColNames()
+      const dRowFilter = [dRow]
+
+      d3.select('table')
+        .append('tr')
+        .attr('class', 'row-data')
+        .selectAll('td')
+        .data(dRowFilter)
+        .enter()
+        .append('td')
+        .attr('align', (d, i) => i === 0 ? 'left' : 'right')
+        .text(d => d)
+        .style('color', function (region) {
+          console.log({ region, color: colorRef[region] })
+          if (colorRef[region]) {
+            return colorRef[region]
+          } else return color
+        })
+    }
+
+    function isBrushed (brushCoords, cx, cy) {
+      const x0 = brushCoords[0][0]
+      const x1 = brushCoords[1][0]
+      const y0 = brushCoords[0][1]
+      const y1 = brushCoords[1][1]
+      return x0 <= cx && cx <= x1 && y0 <= cy && cy <= y1
+    }
   }
 
   return (
